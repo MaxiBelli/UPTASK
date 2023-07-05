@@ -1,4 +1,5 @@
 import User from "../models/User.js";
+import generateId from "../helpers/generateId.js";
 
 const register = async (req, res) => {
   // Avoid duplicate registrations
@@ -12,6 +13,7 @@ const register = async (req, res) => {
 
   try {
     const user = new User(req.body);
+    user.token = generateId();//Generate unique ID for token
     const storedUser = await user.save();
 
     res.json(storedUser);
