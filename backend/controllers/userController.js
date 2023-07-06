@@ -1,12 +1,13 @@
 import User from "../models/User.js";
 import generateId from "../helpers/generateId.js";
+import generateJWT from "../helpers/generateJWT.js";
 
 const register = async (req, res) => {
   // Avoid duplicate registrations
   const { email } = req.body;
-  const existingUser = await User.findOne({ email });
+  const userExists = await User.findOne({ email });
 
-  if (existingUser) {
+  if (userExists) {
     const error = new Error("User already registered");
     return res.status(400).json({ msg: error.message });
   }
@@ -44,6 +45,7 @@ const authenticate = async (req, res) => {
       _id: user._id,
       name: user.name,
       email: user.email,
+      token: generateJWT(user._id),
     });
   } else {
     const error = new Error("Incorrect password");
@@ -51,4 +53,22 @@ const authenticate = async (req, res) => {
   }
 };
 
-export { register };
+const confirm = async (req, res) => {
+  const { token } = req.params;
+  const userConfirm = await User.findOne({ token });
+  if (!userConfirm) {
+    const error = new Error("Invalid token");
+    return res.status(403).json({ msg: error.message });
+  }
+
+  try {
+    userConfirm.confirmed = true;
+    userConfirm.token = "";
+    await userConfirm.save();
+    res.json({ msg: "User confirmed successfully" });
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export { register, authenticate, confirm };
