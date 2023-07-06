@@ -6,14 +6,17 @@ import {
   confirm,
   forgotPassword,
   checkToken,
-  newPassword
+  newPassword,
+  profile
 } from "../controllers/userController.js";
+import checkAuth from "../middleware/checkAuth.js";
 
-// Authentication, Registration, and User Confirmation
-router.post("/", register); // Create a new user
+
+router.post("/", register); 
 router.post("/login", authenticate);
 router.get("/confirm/:token", confirm);
 router.post("/forgot-password", forgotPassword);
 router.route("/forgot-password/:token").get(checkToken).post(newPassword);
+router.get("/profile", checkAuth, profile);
 
 export default router;
