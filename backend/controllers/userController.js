@@ -71,4 +71,42 @@ const confirm = async (req, res) => {
   }
 };
 
-export { register, authenticate, confirm };
+const forgotPassword = async (req, res) => {
+  const { email } = req.body;
+  const user = await User.findOne({ email });
+  if (!user) {
+    const error = new Error("User does not exist");
+    return res.status(404).json({ msg: error.message });
+  }
+
+  try {
+    user.token = generateId();
+    await user.save();
+
+    // Send the email
+    sendPasswordResetEmail({
+      email: user.email,
+      name: user.name,
+      token: user.token,
+    });
+
+    res.json({ msg: "We have sent an email with instructions" });
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+const checkToken = async (req, res) => {
+  const { token } = req.params;
+
+  const validToken = await User.findOne({ token });
+
+  if (validToken) {
+    res.json({ msg: "Token is valid and the user exists" });
+  } else {
+    const error = new Error("Invalid token");
+    return res.status(404).json({ msg: error.message });
+  }
+};
+
+export { register, authenticate, confirm, forgotPassword, checkToken };
