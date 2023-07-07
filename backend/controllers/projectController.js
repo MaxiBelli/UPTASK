@@ -36,7 +36,33 @@ const getProject = async (req, res) => {
   res.json(project);
 };
 
-const editProject = async (req, res) => {};
+const editProject = async (req, res) => {
+  const { id } = req.params;
+
+  const project = await Project.findById(id);
+
+  if (!project) {
+    const error = new Error("Not Found");
+    return res.status(404).json({ msg: error.message });
+  }
+
+  if (project.creator.toString() !== req.user._id.toString()) {
+    const error = new Error("Invalid Action");
+    return res.status(401).json({ msg: error.message });
+  }
+
+  project.name = req.body.name || project.name;
+  project.description = req.body.description || project.description;
+  project.deadline = req.body.deadline || project.deadline;
+  project.client = req.body.client || project.client;
+
+  try {
+    const storedProject = await project.save();
+    res.json(storedProject);
+  } catch (error) {
+    console.log(error);
+  }
+};
 
 const deleteProject = async (req, res) => {};
 
