@@ -11,13 +11,14 @@ const register = async (req, res) => {
     const error = new Error("User already registered");
     return res.status(400).json({ msg: error.message });
   }
-
   try {
     const user = new User(req.body);
-    user.token = generateId(); //Generate unique ID for token
-    const storedUser = await user.save();
+    user.token = generateId();
+    await user.save();
 
-    res.json(storedUser);
+    res.json({
+      msg: "User created successfully. Check your email to confirm your account.",
+    });
   } catch (error) {
     console.log(error);
   }
@@ -136,5 +137,5 @@ export {
   forgotPassword,
   checkToken,
   newPassword,
-  profile
+  profile,
 };
