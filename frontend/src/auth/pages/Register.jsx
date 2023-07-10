@@ -19,6 +19,24 @@ const Register = () => {
       });
       return;
     }
+    if (password !== repeatPassword) {
+      setAlert({
+        msg: "Passwords do not match",
+        error: true,
+      });
+      return;
+    }
+
+    if (password.length < 6) {
+      setAlert({
+        msg: "Password is too short, please enter at least 6 characters",
+        error: true,
+      });
+      return;
+    }
+    setAlert({});
+
+    // Create user in the API
   };
 
   const { msg } = alert;
