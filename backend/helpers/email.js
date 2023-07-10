@@ -13,7 +13,6 @@ export const emailRegistration = async (data) => {
   });
 
   // Email information
-
   const info = await transport.sendMail({
     from: '"UpTask - Project Manager" <accounts@uptask.com>',
     to: email,
@@ -26,5 +25,34 @@ export const emailRegistration = async (data) => {
   
   <p>If you did not create this account, you can ignore this message.</p>
   `,
+  });
+};
+
+export const emailForgotPassword = async (data) => {
+  const { email, name, token } = data;
+
+  const transport = nodemailer.createTransport({
+    host: "sandbox.smtp.mailtrap.io",
+    port: 2525,
+    auth: {
+      user: "ae544664339319",
+      pass: "74e3483fdf0b72",
+    },
+  });
+
+  // Email information
+  const info = await transport.sendMail({
+    from: '"UpTask - Project Manager" <accounts@uptask.com>',
+    to: email,
+    subject: "UpTask - Reset Your Password",
+    text: "Reset your password on UpTask",
+    html: `<p>Hello ${name},</p>
+
+    <p>You have requested to reset your password. Click the following link to generate a new password: 
+
+    <a href="${process.env.FRONTEND_URL}/forgot-password/${token}">Reset Password</a>
+    
+    <p>If you did not request this email, you can ignore this message.</p>
+    `,
   });
 };
