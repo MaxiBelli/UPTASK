@@ -1,6 +1,28 @@
+import { useState } from "react";
 import { Link } from "react-router-dom";
+import Alert from "../../components/Alert";
 
 const Register = () => {
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [repeatPassword, setRepeatPassword] = useState("");
+  const [alert, setAlert] = useState({});
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    if ([name, email, password, repeatPassword].includes("")) {
+      setAlert({
+        msg: "All fields are required",
+        error: true,
+      });
+      return;
+    }
+  };
+
+  const { msg } = alert;
+
   return (
     <>
       <h1 className="text-sky-600 font-black text-5xl capitalize">
@@ -8,7 +30,12 @@ const Register = () => {
         <span className="text-slate-700">Projects</span>
       </h1>
 
-      <form className="my-10 bg-white shadow rounded-lg p-10">
+      {msg && <Alert alert={alert} />}
+
+      <form
+        className="my-10 bg-white shadow rounded-lg p-10"
+        onSubmit={handleSubmit}
+      >
         <div className="my-5">
           <label
             className="uppercase text-gray-600 block text-xl font-bold"
@@ -21,6 +48,8 @@ const Register = () => {
             type="text"
             placeholder="Your Name"
             className="w-full mt-3 p-3 border rounded-xl bg-gray-50"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
           />
         </div>
 
@@ -36,6 +65,8 @@ const Register = () => {
             type="email"
             placeholder="Registration Email"
             className="w-full mt-3 p-3 border rounded-xl bg-gray-50"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
           />
         </div>
         <div className="my-5">
@@ -50,6 +81,8 @@ const Register = () => {
             type="password"
             placeholder="Registration Password"
             className="w-full mt-3 p-3 border rounded-xl bg-gray-50"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
           />
         </div>
 
@@ -65,6 +98,8 @@ const Register = () => {
             type="password"
             placeholder="Repeat Your Password"
             className="w-full mt-3 p-3 border rounded-xl bg-gray-50"
+            value={repeatPassword}
+            onChange={(e) => setRepeatPassword(e.target.value)}
           />
         </div>
 
