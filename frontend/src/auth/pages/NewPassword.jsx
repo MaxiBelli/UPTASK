@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { Link, useParams } from "react-router-dom";
-import axios from "axios";
+import clientAxios from "../../config/clientAxios";
 import Alert from "../../components/Alert";
 
 const NewPassword = () => {
@@ -16,7 +16,7 @@ const NewPassword = () => {
   useEffect(() => {
     const checkToken = async () => {
       try {
-        await axios(`http://localhost:4000/api/users/forgot-password/${token}`);
+        await clientAxios(`/users/forgot-password/${token}`);
         setValidToken(true);
       } catch (error) {
         setAlert({
@@ -33,7 +33,7 @@ const NewPassword = () => {
 
     if (password.length < 6) {
       setAlert({
-        msg: "Password must be at least 6 characters long",
+        msg: "Password must be at least 6 Characters Long.",
         error: true,
       });
       return;
@@ -41,16 +41,16 @@ const NewPassword = () => {
 
     if (password !== repeatNewPassword) {
       setAlert({
-        msg: "Passwords do not match",
+        msg: "Passwords do Not Match",
         error: true,
       });
       return;
     }
 
     try {
-      const url = `http://localhost:4000/api/users/forgot-password/${token}`;
-
-      const { data } = await axios.post(url, { password });
+      const { data } = await clientAxios.post(`/users/forgot-password/${token}`, {
+        password,
+      });
       setAlert({
         msg: data.msg,
         error: false,
@@ -68,7 +68,7 @@ const NewPassword = () => {
 
   return (
     <>
-      <h1 className="text-sky-600 font-black text-6xl capitalize">
+      <h1 className="text-sky-600 font-black text-5xl capitalize">
         Reset your password and keep access to your{" "}
         <span className="text-slate-700">projects</span>
       </h1>
@@ -124,10 +124,10 @@ const NewPassword = () => {
 
       {passwordChanged && (
         <Link
-          className="block text-center my-5 text-slate-500 uppercase text-sm"
+          className="block text-center my-5 text-sky-600 font-bold"
           to="/"
         >
-          Login
+          Log in
         </Link>
       )}
     </>

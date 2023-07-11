@@ -39,23 +39,23 @@ const Login = () => {
 
         <input
           type="submit"
-          value="Login"
+          value="Continue"
           className="bg-sky-700 mb-5 w-full py-3 text-white uppercase font-bold rounded hover:cursor-pointer hover:bg-sky-800 transition-colors"
         />
       </form>
       <nav className="lg:flex lg:justify-between">
-        <Link
-          className="block text-center my-5 text-slate-500 uppercase text-sm"
-          to="/register"
-        >
-          Don't have an account? Register
-        </Link>
-        <Link
-          className="block text-center my-5 text-slate-500 uppercase text-sm"
-          to="/forgot-password"
-        >
-          Forgot Password
-        </Link>
+        <span className="block text-center my-2">
+          <span className="text-gray-500 ">Don't have an account? </span>
+          <Link to="/register" className="text-sky-600">
+            Sign up
+          </Link>
+        </span>
+
+        <span className="block text-center my-2">
+          <Link to="/forgot-password" className="text-sky-600">
+            Forgot Password?
+          </Link>
+        </span>
       </nav>
     </>
   );

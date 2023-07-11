@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import axios from "axios";
+import clientAxios from "../../config/clientAxios";
 import Alert from "../../components/Alert";
 
 const Register = () => {
@@ -15,14 +15,14 @@ const Register = () => {
 
     if ([name, email, password, repeatPassword].includes("")) {
       setAlert({
-        msg: "All fields are required",
+        msg: "All Fields are Required",
         error: true,
       });
       return;
     }
     if (password !== repeatPassword) {
       setAlert({
-        msg: "Passwords do not match",
+        msg: "Passwords do Not Match",
         error: true,
       });
       return;
@@ -30,23 +30,19 @@ const Register = () => {
 
     if (password.length < 6) {
       setAlert({
-        msg: "Password is too short, please enter at least 6 characters",
+        msg: "Password is Too Short, please enter at Least 6 Characters",
         error: true,
       });
       return;
     }
     setAlert({});
 
-    // Create user in the API
     try {
-      const { data } = await axios.post(
-        `${import.meta.env.VITE_BACKEND_URL}/api/users`,
-        {
-          name,
-          email,
-          password,
-        }
-      );
+      const { data } = await clientAxios.post(`/users`, {
+        name,
+        email,
+        password,
+      });
 
       setAlert({
         msg: data.msg,
@@ -155,19 +151,18 @@ const Register = () => {
       </form>
 
       <nav className="lg:flex lg:justify-between">
-        <Link
-          className="block text-center my-5 text-slate-500 uppercase text-sm"
-          to="/"
-        >
-          Already have an account? Log In
-        </Link>
+        <span className="block text-center my-2">
+          <span className="text-gray-500 ">Already have an account? </span>
+          <Link to="/" className="text-sky-600">
+            Log in
+          </Link>
+        </span>
 
-        <Link
-          className="block text-center my-5 text-slate-500 uppercase text-sm"
-          to="/forgot-password"
-        >
-          Forgot Password
-        </Link>
+        <span className="block text-center my-2 ">
+          <Link to="/forgot-password" className="text-sky-600">
+            Forgot Password?
+          </Link>
+        </span>
       </nav>
     </>
   );

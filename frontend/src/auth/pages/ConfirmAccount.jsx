@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
-import axios from "axios";
+import clientAxios from "../../config/clientAxios";
 import Alert from "../../components/Alert";
 
 const ConfirmAccount = () => {
@@ -13,8 +13,7 @@ const ConfirmAccount = () => {
   useEffect(() => {
     const confirmAccount = async () => {
       try {
-        const url = `http://localhost:4000/api/users/confirm/${id}`;
-        const { data } = await axios(url);
+        const { data } = await clientAxios(`/users/confirm/${id}`);
 
         setAlert({
           msg: data.msg,
@@ -35,20 +34,19 @@ const ConfirmAccount = () => {
 
   return (
     <>
-      <h1 className="text-sky-600 font-black text-6xl capitalize">
+      <h1 className="text-sky-600 font-black text-5xl capitalize">
         Confirm Your Account and Start Creating Your {""}
         <span className="text-slate-700">Projects</span>
       </h1>
 
+      {msg && <Alert alert={alert} />}
       <div className="mt-20 md:mt-10 shadow-lg px-5 py-10 rounded-xl bg-white">
-        {msg && <Alert alert={alert} />}
-
         {accountConfirmed && (
           <Link
-            className="block text-center my-5 text-slate-500 uppercase text-sm"
-            to="/login"
+            className="block bg-sky-700 mb-5 w-full py-3 text-white uppercase font-bold rounded hover:cursor-pointer hover:bg-sky-800 transition-colors text-center"
+            to="/"
           >
-            Login
+            Log in
           </Link>
         )}
       </div>
