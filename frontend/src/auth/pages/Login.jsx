@@ -29,7 +29,7 @@ const Login = () => {
       });
       setAlert({});
       localStorage.setItem("token", data.token);
-      setAuth(data)
+      setAuth(data);
     } catch (error) {
       setAlert({
         msg: error.response.data.msg,
