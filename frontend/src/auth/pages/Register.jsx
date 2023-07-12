@@ -153,13 +153,13 @@ const Register = () => {
       <nav className="lg:flex lg:justify-between">
         <span className="block text-center my-2">
           <span className="text-gray-500 ">Already have an account? </span>
-          <Link to="/" className="text-sky-600">
+          <Link to="/" className="text-sky-600 text-lg">
             Log in
           </Link>
         </span>
 
         <span className="block text-center my-2 ">
-          <Link to="/forgot-password" className="text-sky-600">
+          <Link to="/forgot-password" className="text-sky-600 text-lg" text>
             Forgot Password?
           </Link>
         </span>

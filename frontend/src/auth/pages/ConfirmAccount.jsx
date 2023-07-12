@@ -13,7 +13,8 @@ const ConfirmAccount = () => {
   useEffect(() => {
     const confirmAccount = async () => {
       try {
-        const { data } = await clientAxios(`/users/confirm/${id}`);
+        const url = `/users/confirm/${id}`;
+        const { data } = await clientAxios(url);
 
         setAlert({
           msg: data.msg,
@@ -38,12 +39,13 @@ const ConfirmAccount = () => {
         Confirm Your Account and Start Creating Your {""}
         <span className="text-slate-700">Projects</span>
       </h1>
-
-      {msg && <Alert alert={alert} />}
       <div className="mt-20 md:mt-10 shadow-lg px-5 py-10 rounded-xl bg-white">
+        
+      {msg && <Alert alert={alert} />}
+
         {accountConfirmed && (
           <Link
-            className="block bg-sky-700 mb-5 w-full py-3 text-white uppercase font-bold rounded hover:cursor-pointer hover:bg-sky-800 transition-colors text-center"
+            className="block text-center my-2 text-sky-600 text-xl"
             to="/"
           >
             Log in
