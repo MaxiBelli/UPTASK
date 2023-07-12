@@ -7,18 +7,22 @@ import ForgotPassword from "./auth/pages/ForgotPassword";
 import NewPassword from "./auth/pages/NewPassword";
 import ConfirmAccount from "./auth/pages/ConfirmAccount";
 
+import { AuthProvider } from "./auth/context/AuthProvider";
+
 function App() {
   return (
     <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<AuthLayout />}>
-          <Route index element={<Login />} />
-          <Route path="register" element={<Register />} />
-          <Route path="forgot-password" element={<ForgotPassword />} />
-          <Route path="forgot-password/:token" element={<NewPassword />} />
-          <Route path="confirm/:id" element={<ConfirmAccount />} />
-        </Route>
-      </Routes>
+      <AuthProvider>
+        <Routes>
+          <Route path="/" element={<AuthLayout />}>
+            <Route index element={<Login />} />
+            <Route path="register" element={<Register />} />
+            <Route path="forgot-password" element={<ForgotPassword />} />
+            <Route path="forgot-password/:token" element={<NewPassword />} />
+            <Route path="confirm/:id" element={<ConfirmAccount />} />
+          </Route>
+        </Routes>
+      </AuthProvider>
     </BrowserRouter>
   );
 }
