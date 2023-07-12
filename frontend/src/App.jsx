@@ -6,11 +6,11 @@ import Register from "./auth/pages/Register";
 import ForgotPassword from "./auth/pages/ForgotPassword";
 import NewPassword from "./auth/pages/NewPassword";
 import ConfirmAccount from "./auth/pages/ConfirmAccount";
-
-import { AuthProvider } from "./auth/context/AuthProvider";
-
 import ProjectsLayout from "./projects/layout/ProjectsLayout";
 import Projects from "./projects/pages/Projects";
+import NewProject from "./projects/pages/NewProject";
+
+import { AuthProvider } from "./auth/context/AuthProvider";
 
 function App() {
   return (
@@ -27,6 +27,7 @@ function App() {
 
           <Route path="/projects" element={<ProjectsLayout />}>
             <Route index element={<Projects />} />
+            <Route path="create-project" element={<NewProject />} />
           </Route>
         </Routes>
       </AuthProvider>
