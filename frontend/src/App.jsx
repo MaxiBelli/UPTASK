@@ -9,6 +9,9 @@ import ConfirmAccount from "./auth/pages/ConfirmAccount";
 
 import { AuthProvider } from "./auth/context/AuthProvider";
 
+import ProjectsLayout from "./projects/layout/ProjectsLayout";
+import Projects from "./projects/pages/Projects";
+
 function App() {
   return (
     <BrowserRouter>
@@ -20,6 +23,10 @@ function App() {
             <Route path="forgot-password" element={<ForgotPassword />} />
             <Route path="forgot-password/:token" element={<NewPassword />} />
             <Route path="confirm/:id" element={<ConfirmAccount />} />
+          </Route>
+
+          <Route path="/projects" element={<ProjectsLayout />}>
+            <Route index element={<Projects />} />
           </Route>
         </Routes>
       </AuthProvider>
