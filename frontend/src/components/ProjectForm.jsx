@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useParams } from "react-router-dom";
 import useProjects from "../projects/hooks/useProjects";
 import Alert from "./Alert";
 
@@ -9,7 +10,18 @@ const ProjectForm = () => {
   const [deadline, setDeadline] = useState("");
   const [client, setClient] = useState("");
 
-  const { showAlert, alert, submitProject } = useProjects();
+  const params = useParams();
+  const { showAlert , alert, submitProject } = useProjects();
+
+  useEffect(() => {
+    if (params.id) {
+      setId(project._id);
+      setName(project.name);
+      setDescription(project.description);
+      setDeadline(project.deadline?.split("T")[0]);
+      setClient(project.client);
+    }
+  }, [params]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -24,7 +36,13 @@ const ProjectForm = () => {
     }
 
     // Pass the data to the provider
-    submitProject({ id, name, description, deadline, client });
+    await submitProject({ id, name, description, deadline, client });
+
+    setId(null);
+    setName("");
+    setDescription("");
+    setDueDate("");
+    setClient("");
   };
 
   const { msg } = alert;
