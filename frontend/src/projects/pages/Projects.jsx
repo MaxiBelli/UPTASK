@@ -19,7 +19,7 @@ const Projects = () => {
             <ProjectPreview key={project._id} project={project} />
           ))
         ) : (
-          <p className="text-center text-gray-600 uppercase p-5">
+          <p className="text-center text-gray-600 uppercase font-bold p-5">
             No projects yet
           </p>
         )}
