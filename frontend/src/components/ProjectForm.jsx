@@ -10,8 +10,10 @@ const ProjectForm = () => {
   const [deadline, setDeadline] = useState("");
   const [client, setClient] = useState("");
 
+  const [showSubmit, setShowSubmit] = useState(true);
+
   const params = useParams();
-  const { showAlert , alert, submitProject } = useProjects();
+  const { showAlert , alert, submitProject , project } = useProjects();
 
   useEffect(() => {
     if (params.id) {
@@ -41,8 +43,10 @@ const ProjectForm = () => {
     setId(null);
     setName("");
     setDescription("");
-    setDueDate("");
+    setDeadline("");
     setClient("");
+
+    setShowSubmit(false);
   };
 
   const { msg } = alert;
@@ -124,11 +128,13 @@ const ProjectForm = () => {
         />
       </div>
 
-      <input
-        type="submit"
-        value={id ? "Update Project" : "Create Project"}
-        className="bg-sky-600 w-full p-3 uppercase font-bold text-white rounded cursor-pointer hover:bg-sky-700 transition-colors"
-      />
+      {showSubmit && (
+        <input
+          type="submit"
+          value={id ? "Update Project" : "Create Project"}
+          className="bg-sky-600 w-full p-3 uppercase font-bold text-white rounded cursor-pointer hover:bg-sky-700 transition-colors"
+        />
+      )}
     </form>
   );
 };

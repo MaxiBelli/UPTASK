@@ -69,6 +69,21 @@ const ProjectsProvider = ({ children }) => {
         project,
         config
       );
+
+      const updatedProjects = projects.map((projectState) =>
+        projectState._id === data._id ? data : projectState
+      );
+      setProjects(updatedProjects);
+
+      setAlert({
+        msg: "Project Updated Successfully",
+        error: false,
+      });
+
+      setTimeout(() => {
+        setAlert({});
+        navigate("/projects");
+      }, 3000);
     } catch (error) {
       console.log(error);
     }
