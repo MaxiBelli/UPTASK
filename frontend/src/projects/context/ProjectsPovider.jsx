@@ -33,6 +33,7 @@ const ProjectsProvider = ({ children }) => {
     getProjects();
   }, []);
 
+  // SHOW ALERT
   const showAlert = (alert) => {
     setAlert(alert);
 
@@ -41,7 +42,17 @@ const ProjectsProvider = ({ children }) => {
     }, 5000);
   };
 
+  // SUBMIT PROJECT ---> NEW or EDIT
   const submitProject = async (project) => {
+    if (project.id) {
+      await editProject(project);
+    } else {
+      await newProject(project);
+    }
+  };
+
+  // EDIT PROJECT
+  const editProject = async (project) => {
     try {
       const token = localStorage.getItem("token");
       if (!token) return;
@@ -52,12 +63,36 @@ const ProjectsProvider = ({ children }) => {
           Authorization: `Bearer ${token}`,
         },
       };
+
+      const { data } = await clientAxios.put(
+        `/projects/${project.id}`,
+        project,
+        config
+      );
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  // NEW PROJECT
+  const newProject = async (project) => {
+    try {
+      const token = localStorage.getItem("token");
+      if (!token) return;
+
+      const config = {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      };
+
       const { data } = await clientAxios.post("/projects", project, config);
 
       setProjects([...projects, data]);
 
       setAlert({
-        msj: "Project Created Successfully",
+        msg: "Project Created Successfully",
         error: false,
       });
 
@@ -70,6 +105,7 @@ const ProjectsProvider = ({ children }) => {
     }
   };
 
+  // GET PROJECT
   const getProject = async (id) => {
     setLoading(true);
     try {
@@ -95,13 +131,13 @@ const ProjectsProvider = ({ children }) => {
   return (
     <ProjectsContext.Provider
       value={{
+        alert,
+        getProject,
+        loading,
+        project,
         projects,
         showAlert,
-        alert,
         submitProject,
-        getProject,
-        project,
-        loading,
       }}
     >
       {children}
