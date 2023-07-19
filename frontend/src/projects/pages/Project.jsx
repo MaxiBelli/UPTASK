@@ -5,13 +5,21 @@ import useProjects from "../hooks/useProjects";
 const Project = () => {
   const params = useParams();
 
-  const { getProject } = useProjects();
+  const { getProject, project , loading } = useProjects();
 
   useEffect(() => {
     getProject(params.id);
   }, []);
 
-  return <div>Project</div>;
+  const { name } = project;
+
+  return loading ? (
+    "Loading..."
+  ) : (
+    <div>
+      <h1 className="font-black text-4xl">{name}</h1>
+    </div>
+  );
 };
 
 export default Project;
