@@ -8,13 +8,13 @@ const AuthProvider = ({ children }) => {
   const [auth, setAuth] = useState({});
   const [loading, setLoading] = useState(true);
 
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   useEffect(() => {
     const authenticateUser = async () => {
       const token = localStorage.getItem("token");
       if (!token) {
-        setLoading(false)
+        setLoading(false);
         return;
       }
 
@@ -28,7 +28,7 @@ const AuthProvider = ({ children }) => {
       try {
         const { data } = await clientAxios.get("/users/profile", config);
         setAuth(data);
-        navigate("projects")
+        // navigate("projects")
       } catch (error) {
         setAuth({});
       }

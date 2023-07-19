@@ -34,13 +34,12 @@ const getProject = async (req, res) => {
     return res.status(401).json({ msg: error.message });
   }
 
-  // Get Project Tasks
-  const task = await Task.find().where("project").equals(project._id);
 
-  res.json({
+
+  res.json(
     project,
-    task,
-  });
+   
+  );
 };
 
 const editProject = async (req, res) => {

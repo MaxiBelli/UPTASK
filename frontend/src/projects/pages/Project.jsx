@@ -1,9 +1,17 @@
-
+import { useEffect } from "react";
+import { useParams } from "react-router-dom";
+import useProjects from "../hooks/useProjects";
 
 const Project = () => {
-  return (
-    <div>Project</div>
-  )
-}
+  const params = useParams();
 
-export default Project
+  const { getProject } = useProjects();
+
+  useEffect(() => {
+    getProject(params.id);
+  }, []);
+
+  return <div>Project</div>;
+};
+
+export default Project;
