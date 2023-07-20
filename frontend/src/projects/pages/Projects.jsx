@@ -1,4 +1,3 @@
-
 import useProjects from "../hooks/useProjects";
 import ProjectPreview from "../../components/ProjectPreview";
 import Alert from "../../components/Alert";
@@ -9,7 +8,7 @@ const Projects = () => {
 
   return (
     <>
-      <h1 className="text-4xl font-black">Projects</h1>
+      <h1 className="text-center text-4xl font-black">Projects</h1>
 
       {msg && <Alert alert={alert} />}
 

@@ -87,7 +87,7 @@ const deleteProject = async (req, res) => {
 
   try {
     await project.deleteOne();
-    res.json({ msg: "Project Deleted" });
+    res.json({ msg: "Project Deleted Successfully" });
   } catch (error) {
     console.log(error);
   }
