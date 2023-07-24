@@ -3,7 +3,7 @@ import ProjectForm from "../../components/ProjectForm";
 const NewProject = () => {
   return (
     <>
-      <h1 className="text-center font-black text-4xl">Create Project</h1>
+      <h1 className="text-center font-black text-4xl uppercase">Create Project</h1>
 
       <div className="mt-10 flex justify-center">
         <ProjectForm />

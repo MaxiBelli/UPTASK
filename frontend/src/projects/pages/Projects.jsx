@@ -8,7 +8,7 @@ const Projects = () => {
 
   return (
     <>
-      <h1 className="text-center text-4xl font-black">Projects</h1>
+      <h1 className="text-center text-4xl font-black uppercase">Projects</h1>
 
       {msg && <Alert alert={alert} />}
 
@@ -18,7 +18,7 @@ const Projects = () => {
             <ProjectPreview key={project._id} project={project} />
           ))
         ) : (
-          <p className="text-center text-gray-600 uppercase font-bold p-5">
+          <p className="text-center text-xl text-gray-500  font-bold p-5">
             No projects yet
           </p>
         )}

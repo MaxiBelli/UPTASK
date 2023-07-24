@@ -35,7 +35,7 @@ const EditProject = () => {
 
   return (
     <>
-      <h1 className="text-center font-black text-4xl">Edit Project</h1>
+      <h1 className="text-center font-black text-4xl uppercase">Edit Project</h1>
       <div className="flex justify-evenly">
         <h1 className="text-center font-black text-3xl mt-6">{name}</h1>
 
