@@ -71,8 +71,10 @@ const ProjectsProvider = ({ children }) => {
         config
       );
 
-      const updatedProjects = projects.map((projectState) =>
-        projectState._id === data._id ? data : projectState
+      const updatedProjects = projects.map(
+        (
+          projectState // Synchronize state
+        ) => (projectState._id === data._id ? data : projectState)
       );
       setProjects(updatedProjects);
 
@@ -159,8 +161,8 @@ const ProjectsProvider = ({ children }) => {
 
       const { data } = await clientAxios.delete(`/projects/${id}`, config);
 
-      // Synchronize state
       const updatedProjects = projects.filter(
+        // Synchronize state
         (projectState) => projectState._id !== id
       );
       setProjects(updatedProjects);
@@ -179,13 +181,28 @@ const ProjectsProvider = ({ children }) => {
     }
   };
 
+  // HANDLE TASK MODAL
   const handleTaskModal = () => {
     setTaskFormModal(!taskFormModal);
-    
   };
 
+  // SUBMIT TASK
   const submitTask = async (task) => {
-    console.log(task)
+    try {
+      const token = localStorage.getItem("token");
+      if (!token) return;
+
+      const config = {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      };
+
+      const { data } = await clientAxios.post("/tasks", task, config);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (

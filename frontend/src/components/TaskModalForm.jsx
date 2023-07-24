@@ -1,4 +1,5 @@
 import { Fragment, useState, useEffect } from "react";
+import { useParams } from "react-router-dom";
 import { Dialog, Transition } from "@headlessui/react";
 import useProjects from "../projects/hooks/useProjects";
 import Alert from "./Alert";
@@ -10,6 +11,8 @@ const TaskModalForm = () => {
   const [description, setDescription] = useState("");
   const [deadline, setDeadline] = useState("");
   const [priority, setPriority] = useState("");
+
+  const params = useParams();
 
   const { taskFormModal, handleTaskModal, showAlert, alert, submitTask } =
     useProjects();
@@ -30,6 +33,7 @@ const TaskModalForm = () => {
       description,
       deadline,
       priority,
+      project: params.id
     });
 
     setId("");
