@@ -20,6 +20,7 @@ const addTask = async (req, res) => {
   try {
     const storedTask = await Task.create(req.body);
     // Store the ID in the project
+    existsProject.tasks.push(storedTask._id);
     await existsProject.save();
     res.json(storedTask);
   } catch (error) {
