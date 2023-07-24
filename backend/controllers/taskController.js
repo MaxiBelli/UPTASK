@@ -1,6 +1,7 @@
 import Project from "../models/Project.js";
 import Task from "../models/Task.js";
 
+// ADD TASK
 const addTask = async (req, res) => {
   const { project } = req.body;
 
@@ -18,12 +19,15 @@ const addTask = async (req, res) => {
 
   try {
     const storedTask = await Task.create(req.body);
+    // Store the ID in the project
+    await existsProject.save();
     res.json(storedTask);
   } catch (error) {
     console.log(error);
   }
 };
 
+// GET TASK
 const getTask = async (req, res) => {
   const { id } = req.params;
 
@@ -42,6 +46,7 @@ const getTask = async (req, res) => {
   res.json(task);
 };
 
+// UPDATE TASK
 const updateTask = async (req, res) => {
   const { id } = req.params;
 
@@ -70,6 +75,7 @@ const updateTask = async (req, res) => {
   }
 };
 
+// DELETE TASK
 const deleteTask = async (req, res) => {
   const { id } = req.params;
 
@@ -93,6 +99,7 @@ const deleteTask = async (req, res) => {
   }
 };
 
+// CHANGE STATUS
 const changeStatus = async (req, res) => {};
 
 export { addTask, getTask, updateTask, deleteTask, changeStatus };
