@@ -179,7 +179,7 @@ const ProjectsProvider = ({ children }) => {
     }
   };
 
-  const handleModalTask = () => {
+  const handleTaskModal = () => {
     setTaskFormModal(!taskFormModal);
     
   };
@@ -190,7 +190,7 @@ const ProjectsProvider = ({ children }) => {
         alert,
         deleteProject,
         getProject,
-        handleModalTask,
+        handleTaskModal,
         loading,
         project,
         projects,
