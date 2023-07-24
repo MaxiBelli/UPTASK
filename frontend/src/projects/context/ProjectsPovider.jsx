@@ -184,6 +184,10 @@ const ProjectsProvider = ({ children }) => {
     
   };
 
+  const submitTask = async (task) => {
+    console.log(task)
+  };
+
   return (
     <ProjectsContext.Provider
       value={{
@@ -196,6 +200,7 @@ const ProjectsProvider = ({ children }) => {
         projects,
         showAlert,
         submitProject,
+        submitTask,
         taskFormModal,
       }}
     >
