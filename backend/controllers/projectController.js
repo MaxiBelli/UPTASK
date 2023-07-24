@@ -2,11 +2,16 @@ import Project from "../models/Project.js";
 import Task from "../models/Task.js";
 import User from "../models/User.js";
 
+// GET PROJECTS
 const getProjects = async (req, res) => {
-  const projects = await Project.find().where("creator").equals(req.user);
+  const projects = await Project.find()
+    .where("creator")
+    .equals(req.user)
+    .select("-tasks");
   res.json(projects);
 };
 
+// CREATE PROJECT
 const createProject = async (req, res) => {
   const project = new Project(req.body);
   project.creator = req.user._id;
@@ -19,10 +24,11 @@ const createProject = async (req, res) => {
   }
 };
 
+// GET PROJECT
 const getProject = async (req, res) => {
   const { id } = req.params;
 
-  const project = await Project.findById(id);
+  const project = await Project.findById(id).populate("tasks");
 
   if (!project) {
     const error = new Error("Not Found");
@@ -34,14 +40,10 @@ const getProject = async (req, res) => {
     return res.status(401).json({ msg: error.message });
   }
 
-
-
-  res.json(
-    project,
-   
-  );
+  res.json(project);
 };
 
+// EDIT PROJECT
 const editProject = async (req, res) => {
   const { id } = req.params;
 
@@ -70,6 +72,7 @@ const editProject = async (req, res) => {
   }
 };
 
+// DELETE PROJECT
 const deleteProject = async (req, res) => {
   const { id } = req.params;
 
