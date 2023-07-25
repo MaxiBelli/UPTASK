@@ -6,7 +6,8 @@ import Alert from "./Alert";
 
 const PRIORITY = ["Low", "Medium", "High"];
 
-const TaskModalForm = () => {
+const ModalTaskForm = () => {
+  const [id, setId] = useState("");
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
   const [deadline, setDeadline] = useState("");
@@ -14,8 +15,24 @@ const TaskModalForm = () => {
 
   const params = useParams();
 
-  const { taskFormModal, handleTaskModal, showAlert, alert, submitTask } =
+  const { modalTaskForm, handleModalTask, showAlert, alert, submitTask, task } =
     useProjects();
+
+  useEffect(() => {
+    if (task?._id) {
+      setId(task._id);
+      setName(task.name);
+      setDescription(task.description);
+      setDeadline(task.deadline?.split("T")[0]);
+      setPriority(task.priority);
+      return;
+    }
+    setId("");
+    setName("");
+    setDescription("");
+    setDeadline("");
+    setPriority("");
+  }, [task]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -29,14 +46,14 @@ const TaskModalForm = () => {
     }
 
     await submitTask({
+      id,
       name,
       description,
       deadline,
       priority,
-      project: params.id
+      project: params.id,
     });
 
-   
     setName("");
     setDescription("");
     setDeadline("");
@@ -46,11 +63,11 @@ const TaskModalForm = () => {
   const { msg } = alert;
 
   return (
-    <Transition.Root show={taskFormModal} as={Fragment}>
+    <Transition.Root show={modalTaskForm} as={Fragment}>
       <Dialog
         as="div"
         className="fixed z-10 inset-0 overflow-y-auto"
-        onClose={handleTaskModal}
+        onClose={handleModalTask}
       >
         <div className="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
           <Transition.Child
@@ -87,7 +104,7 @@ const TaskModalForm = () => {
                 <button
                   type="button"
                   className="bg-white rounded-md text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-                  onClick={handleTaskModal}
+                  onClick={handleModalTask}
                 >
                   <span className="sr-only">Close</span>
                   <svg
@@ -109,9 +126,9 @@ const TaskModalForm = () => {
                 <div className="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left w-full">
                   <Dialog.Title
                     as="h3"
-                    className="text-center text-2xl leading-6 font-bold text-gray-900 uppercase"
+                    className="text-center text-3xl leading-6 font-bold text-gray-900"
                   >
-                    Create Task
+                    {id ? "Edit Task" : "Create Task"}
                   </Dialog.Title>
 
                   {msg && <Alert alert={alert} />}
@@ -190,7 +207,7 @@ const TaskModalForm = () => {
                     <input
                       type="submit"
                       className="bg-sky-600 hover:bg-sky-700 w-full p-3 text-white uppercase font-bold cursor-pointer transition-colors rounded text-sm"
-                      value="Create Task"
+                      value={id ? "Save Changes" : "Create Task"}
                     />
                   </form>
                 </div>
@@ -203,4 +220,4 @@ const TaskModalForm = () => {
   );
 };
 
-export default TaskModalForm;
+export default ModalTaskForm;

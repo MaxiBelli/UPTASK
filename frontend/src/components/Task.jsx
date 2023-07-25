@@ -1,19 +1,25 @@
 import { formatDate } from "../helpers/formatDate";
+import useProjects from "../projects/hooks/useProjects";
 
 const Task = ({ task }) => {
+  const { handleModalTaskEdit } = useProjects();
+
   const { description, name, priority, deadline, status, _id } = task;
 
   return (
     <div className="border-b p-5 flex justify-between items-center">
       <div className="flex flex-col items-start">
-        <p className="mb-1 text-2xl font-bold">{name}</p>
-        <p className="mb-1 text-sm text-gray-500 uppercase">{description}</p>
-        <p className="mb-1 text-xl">{formatDate(deadline)}</p>
-        <p className="mb-1 text-lg text-gray-600">Priority: {priority}</p>
+        <p className="mb-1 text-xl font-bold">{name}</p>
+        <p className="mb-1 text-lg text-gray-500 uppercase">{description}</p>
+        <p className="mb-1 text-sm">{formatDate(deadline)}</p>
+        <p className="mb-1 text-gray-600">Priority: {priority}</p>
       </div>
 
       <div className="flex flex-col lg:flex-row gap-2">
-        <button className=" flex items-center gap-2 bg-indigo-600 px-4 py-3 text-white uppercase font-bold text-sm rounded-lg">
+        <button
+          className=" flex items-center gap-2 bg-yellow-500 px-4 py-3 text-white uppercase font-bold text-sm rounded-lg"
+          onClick={() => handleModalTaskEdit(task)}
+        >
           <svg
             xmlns="http://www.w3.org/2000/svg"
             className="h-4 w-4"
@@ -33,14 +39,14 @@ const Task = ({ task }) => {
 
         <button
           className={`${
-            status ? "bg-sky-600" : "bg-gray-600"
+            status ? "bg-green-400" : "bg-green-600"
           } px-4 py-3 text-white uppercase font-bold text-sm rounded-lg`}
         >
           {status ? "Incomplete" : "Complete"}
         </button>
 
         <button className="flex items-center gap-2 bg-red-600 px-4 py-3 text-white uppercase font-bold text-sm rounded-lg">
-        <svg
+          <svg
             xmlns="http://www.w3.org/2000/svg"
             className="h-4 w-4"
             fill="none"
