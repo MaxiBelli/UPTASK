@@ -35,11 +35,11 @@ const EditProject = () => {
 
   return (
     <>
-      <h1 className="text-center font-black text-4xl uppercase">Edit Project</h1>
+      <h1 className="text-center font-black text-4xl">Edit Project</h1>
       <div className="flex justify-evenly">
         <h1 className="text-center font-black text-3xl mt-6">{name}</h1>
 
-        <div className="flex items-center gap-2 mt-6 text-gray-400 hover:text-black">
+        <div className="flex items-center gap-2 mt-6 text-gray-400 hover:text-red-600">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             className="h-6 w-6"

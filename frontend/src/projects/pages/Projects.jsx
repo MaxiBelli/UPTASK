@@ -8,7 +8,7 @@ const Projects = () => {
 
   return (
     <>
-      <h1 className="text-center text-4xl font-black uppercase">Projects</h1>
+      <h1 className="text-4xl font-black">Projects</h1>
 
       {msg && <Alert alert={alert} />}
 
