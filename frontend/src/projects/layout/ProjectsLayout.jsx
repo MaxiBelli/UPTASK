@@ -1,7 +1,7 @@
 import { Outlet, Navigate } from "react-router-dom";
 import useAuth from "../../auth/hooks/useAuth";
-import Header from "../../components/Header";
-import Sidebar from "../../components/Sidebar";
+import Header from "../components/Header";
+import Sidebar from "../components/Sidebar";
 
 const ProjectsLayout = () => {
   const { auth, loading } = useAuth();

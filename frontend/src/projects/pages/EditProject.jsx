@@ -1,8 +1,8 @@
 import { useEffect, useState, Fragment } from "react";
 import { useParams } from "react-router-dom";
-import ProjectForm from "../../components/ProjectForm";
+import ProjectForm from "../components/ProjectForm";
 import useProjects from "../hooks/useProjects";
-import ModalDelete from "../../components/ModalDelete";
+import ModalDelete from "../components/ModalDelete";
 
 const EditProject = () => {
   const params = useParams();

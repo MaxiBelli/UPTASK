@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
 import useProjects from "../hooks/useProjects";
-import ModalTaskForm from "../../components/ModalTaskForm";
-import ModalDelete from "../../components/ModalDelete";
-import Task from "../../components/Task";
-import Alert from "../../components/Alert";
+import ModalTaskForm from "../components/ModalTaskForm";
+import ModalDelete from "../components/ModalDelete";
+import Task from "../components/Task";
+import Alert from "../../components/Alert"
 
 const Project = () => {
   const params = useParams();

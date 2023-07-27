@@ -1,5 +1,5 @@
 import { formatDate } from "../helpers/formatDate";
-import useProjects from "../projects/hooks/useProjects";
+import useProjects from "../hooks/useProjects";
 
 const Task = ({ task }) => {
   const { handleModalTaskEdit, handleModalTaskDelete } = useProjects();

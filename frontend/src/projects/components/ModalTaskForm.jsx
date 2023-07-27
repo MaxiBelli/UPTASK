@@ -1,8 +1,8 @@
 import { Fragment, useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { Dialog, Transition } from "@headlessui/react";
-import useProjects from "../projects/hooks/useProjects";
-import Alert from "./Alert";
+import useProjects from "../hooks/useProjects";
+import Alert from "../../components/Alert"
 
 const PRIORITY = ["Low", "Medium", "High"];
 
