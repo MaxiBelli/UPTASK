@@ -5,12 +5,12 @@ const Sidebar = () => {
   const { auth } = useAuth();
 
   return (
-    <aside className="md:w-1/3 lg:w-1/5 xl:w-1/6 px-5 py-10">
+    <aside className="md:w-1/3 lg:w-1/5 xl:w-1/6 px-5 py-10 mt-2">
       <p className="text-xl font-bold">Hello: {auth.name}</p>
 
       <Link
         to="create-project"
-        className="bg-sky-600 w-full p-3 text-white uppercase font-bold mt-5 text-center rounded-lg flex gap-2 items-center justify-center"
+        className="bg-sky-600 w-full p-3 text-white uppercase font-bold mt-6 text-center rounded-lg flex gap-2 items-center justify-center"
       >
         {" "}
         <svg
