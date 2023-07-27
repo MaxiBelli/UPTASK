@@ -6,11 +6,13 @@ const ProjectsContext = createContext();
 
 const ProjectsProvider = ({ children }) => {
   const [projects, setProjects] = useState([]);
-  const [alert, setAlert] = useState({});
   const [project, setProject] = useState({});
+  const [task, setTask] = useState({});
+  const [alert, setAlert] = useState({});
   const [loading, setLoading] = useState(false);
   const [modalTaskForm, setModalTaskForm] = useState(false);
-  const [task, setTask] = useState({});
+  const [modalTaskDelete, setModalTaskDelete] = useState(false);
+  const [modalProjectDelete, setModalProjectDelete] = useState(false);
 
   const navigate = useNavigate();
 
@@ -33,7 +35,7 @@ const ProjectsProvider = ({ children }) => {
       }
     };
     getProjects();
-  }, []);
+  }, [projects]);
 
   // SHOW ALERT
   const showAlert = (alert) => {
@@ -182,6 +184,11 @@ const ProjectsProvider = ({ children }) => {
     }
   };
 
+  // HANDLE MODAL PROJECT DELETE
+  const handleModalProjectDelete = () => {
+    setModalProjectDelete(!modalProjectDelete);
+  };
+
   // HANDLE MODAL TASK
   const handleModalTask = () => {
     setModalTaskForm(!modalTaskForm);
@@ -213,7 +220,7 @@ const ProjectsProvider = ({ children }) => {
       const { data } = await clientAxios.post("/tasks", task, config);
 
       const updatedProject = { ...project };
-      updatedProject.tasks = { ...project.tasks, data };
+      updatedProject.tasks.push(data);
       setProject(updatedProject);
 
       setAlert({});
@@ -251,9 +258,51 @@ const ProjectsProvider = ({ children }) => {
     }
   };
 
+  // HANDLE MODAL TASK EDIT
   const handleModalTaskEdit = (task) => {
     setTask(task);
     setModalTaskForm(true);
+  };
+
+  // HANDLE MODAL TASK DELETE
+  const handleModalTaskDelete = (task) => {
+    setTask(task);
+    setModalTaskDelete(!modalTaskDelete);
+  };
+
+  // DELETE TASK
+  const deleteTask = async () => {
+    try {
+      const token = localStorage.getItem("token");
+      if (!token) return;
+
+      const config = {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      };
+
+      const { data } = await clientAxios.delete(`/tasks/${task._id}`, config);
+
+      setAlert({
+        msg: data.msg,
+        error: false,
+      });
+
+      const updatedProject = { ...project };
+      updatedProject.tasks = updatedProject.tasks.filter(
+        (taskState) => taskState._id !== data._id
+      );
+      setProject(updatedProject);
+      setModalTaskDelete(false);
+      setTask({});
+      setTimeout(() => {
+        setAlert({});
+      }, 3000);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
@@ -261,11 +310,16 @@ const ProjectsProvider = ({ children }) => {
       value={{
         alert,
         deleteProject,
+        deleteTask,
         getProject,
+        handleModalProjectDelete,
         handleModalTask,
         handleModalTaskEdit,
+        handleModalTaskDelete,
         loading,
         modalTaskForm,
+        modalTaskDelete,
+        modalProjectDelete,
         project,
         projects,
         showAlert,

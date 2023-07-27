@@ -2,7 +2,7 @@ import { formatDate } from "../helpers/formatDate";
 import useProjects from "../projects/hooks/useProjects";
 
 const Task = ({ task }) => {
-  const { handleModalTaskEdit } = useProjects();
+  const { handleModalTaskEdit, handleModalTaskDelete } = useProjects();
 
   const { description, name, priority, deadline, status, _id } = task;
 
@@ -45,7 +45,10 @@ const Task = ({ task }) => {
           {status ? "Incomplete" : "Complete"}
         </button>
 
-        <button className="flex items-center gap-2 bg-red-600 px-4 py-3 text-white uppercase font-bold text-sm rounded-lg">
+        <button
+          className="flex items-center gap-2 bg-red-600 px-4 py-3 text-white uppercase font-bold text-sm rounded-lg"
+          onClick={() => handleModalTaskDelete(task)}
+        >
           <svg
             xmlns="http://www.w3.org/2000/svg"
             className="h-4 w-4"
