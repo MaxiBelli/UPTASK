@@ -11,6 +11,7 @@ import Projects from "./projects/pages/Projects";
 import NewProject from "./projects/pages/NewProject";
 import Project from "./projects/pages/Project";
 import EditProject from "./projects/pages/EditProject";
+import NewCollaborator from "./projects/pages/NewCollaborator";
 
 import { AuthProvider } from "./auth/context/AuthProvider";
 import { ProjectsProvider } from "./projects/context/ProjectsPovider";
@@ -32,6 +33,7 @@ function App() {
             <Route path="/projects" element={<ProjectsLayout />}>
               <Route index element={<Projects />} />
               <Route path="create-project" element={<NewProject />} />
+              <Route path="new-collaborator/:id" element={<NewCollaborator />} />
               <Route path=":id" element={<Project />} />
               <Route path="edit/:id" element={<EditProject />} />
             </Route>
