@@ -2,9 +2,13 @@ import { Fragment, useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { Dialog, Transition } from "@headlessui/react";
 import useProjects from "../hooks/useProjects";
-import Alert from "../../components/Alert"
+import Alert from "../../components/Alert";
 
-const PRIORITY = ["Low", "Medium", "High"];
+const PRIORITY = [
+  { name: "Low", colorClass: "bg-green-500" },
+  { name: "Medium", colorClass: "bg-yellow-500" },
+  { name: "High", colorClass: "bg-red-500" },
+];
 
 const ModalTaskForm = () => {
   const [id, setId] = useState("");
@@ -190,18 +194,22 @@ const ModalTaskForm = () => {
                       >
                         Priority
                       </label>
-                      <select
-                        id="priority"
-                        className="border-2 w-full p-2 mt-2 placeholder-gray-400 rounded-md"
-                        value={priority}
-                        onChange={(e) => setPriority(e.target.value)}
-                      >
-                        <option value="">-- Select --</option>
-
+                      <div className="flex justify-between mt-2">
                         {PRIORITY.map((option) => (
-                          <option key={option}>{option}</option>
+                          <button
+                            key={option.name}
+                            type="button"
+                            className={`py-2 px-4 rounded-md text-white font-bold ${
+                              priority === option.name
+                                ? option.colorClass
+                                : "bg-gray-300 hover:bg-gray-400"
+                            } w-24`}
+                            onClick={() => setPriority(option.name)}
+                          >
+                            {option.name}
+                          </button>
                         ))}
-                      </select>
+                      </div>
                     </div>
 
                     <input
