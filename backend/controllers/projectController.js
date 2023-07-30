@@ -96,7 +96,20 @@ const deleteProject = async (req, res) => {
   }
 };
 
-const searchCollaborator = async (req, res) => {};
+
+// SEARCH COLLABORATOR
+const searchCollaborator = async (req, res) => {  const { email } = req.body;
+const user = await User.findOne({ email }).select(
+  "-confirmed -createdAt -password -token -updatedAt -__v "
+);
+
+if (!user) {
+  const error = new Error("User not found");
+  return res.status(404).json({ msg: error.message });
+}
+
+res.json(user);
+};
 
 const addCollaborator = async (req, res) => {};
 
