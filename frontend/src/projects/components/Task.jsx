@@ -1,5 +1,6 @@
 import { formatDate } from "../helpers/formatDate";
 import useProjects from "../hooks/useProjects";
+import PRIORITY from "../constants/priority";
 
 const Task = ({ task }) => {
   const { handleModalTaskEdit, handleModalTaskDelete } = useProjects();
@@ -13,12 +14,8 @@ const Task = ({ task }) => {
         <p className="mb-1 text-base text-gray-500">{description}</p>
         <p className="mb-1 text-base">{formatDate(deadline)}</p>
         <span
-          className={`py-1 rounded-lg text-center text-white font-bold text-sm ${
-            priority === "Low"
-              ? "bg-green-500"
-              : priority === "Medium"
-              ? "bg-yellow-400"
-              : "bg-red-500"
+          className={`py-1 rounded-lg text-center mt-1 text-white font-bold text-sm ${
+            PRIORITY.find((p) => p.name === priority)?.bgColor || "bg-gray-500"
           } w-24`}
         >
           {priority}

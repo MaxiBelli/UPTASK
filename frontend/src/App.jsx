@@ -14,7 +14,7 @@ import EditProject from "./projects/pages/EditProject";
 import NewCollaborator from "./projects/pages/NewCollaborator";
 
 import { AuthProvider } from "./auth/context/AuthProvider";
-import { ProjectsProvider } from "./projects/context/ProjectsPovider";
+import { ProjectsProvider } from "./projects/context/ProjectsProvider";
 
 function App() {
   return (

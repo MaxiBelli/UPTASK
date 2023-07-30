@@ -219,12 +219,19 @@ const ProjectsProvider = ({ children }) => {
 
       const { data } = await clientAxios.post("/tasks", task, config);
 
+      setAlert({
+        msg: "Task Created Successfully",
+        error: false,
+      });
+
       const updatedProject = { ...project };
       updatedProject.tasks.push(data);
       setProject(updatedProject);
 
-      setAlert({});
-      setModalTaskForm(false);
+      setTimeout(() => {
+        setAlert({});
+        setModalTaskForm(false);
+      }, 2000);
     } catch (error) {
       console.log(error);
     }
@@ -245,14 +252,21 @@ const ProjectsProvider = ({ children }) => {
 
       const { data } = await clientAxios.put(`/tasks/${task.id}`, task, config);
 
+      setAlert({
+        msg: "Task Created Successfully",
+        error: false,
+      });
+
       const updatedProject = { ...project };
       updatedProject.tasks = updatedProject.tasks.map((taskState) =>
         taskState._id === data._id ? data : taskState
       );
       setProject(updatedProject);
 
-      setAlert({});
-      setModalTaskForm(false);
+      setTimeout(() => {
+        setAlert({});
+        setModalTaskForm(false);
+      }, 2000);
     } catch (error) {
       console.log(error);
     }
@@ -306,8 +320,8 @@ const ProjectsProvider = ({ children }) => {
   };
 
   const submitCollaborator = async (email) => {
-    console.log(email)
-  }
+    console.log(email);
+  };
 
   return (
     <ProjectsContext.Provider

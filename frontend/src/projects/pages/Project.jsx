@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useParams, Link } from "react-router-dom";
+import { useParams, Link, useNavigate } from "react-router-dom";
 import useProjects from "../hooks/useProjects";
 import ModalTaskForm from "../components/ModalTaskForm";
 import ModalDelete from "../components/ModalDelete";
@@ -9,6 +9,7 @@ import { formatDate } from "../helpers/formatDate";
 
 const Project = () => {
   const params = useParams();
+  const navigate = useNavigate();
 
   const {
     getProject,
@@ -38,19 +39,59 @@ const Project = () => {
 
   return (
     <>
+      <div className="absolute top-20 right-8 text-gray-400 hover:text-gray-800 flex items-center gap-2 mt-6">
+        <button
+          className="uppercase font-bold flex items-center gap-1"
+          onClick={() => navigate(-1)}
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+            fill="currentColor"
+            class="w-6 h-6"
+          >
+            <path
+              fill-rule="evenodd"
+              d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25zm-4.28 9.22a.75.75 0 000 1.06l3 3a.75.75 0 101.06-1.06l-1.72-1.72h5.69a.75.75 0 000-1.5h-5.69l1.72-1.72a.75.75 0 00-1.06-1.06l-3 3z"
+              clip-rule="evenodd"
+            />
+          </svg>
+          BACK
+        </button>
+      </div>
+      <div className="absolute top-20 right-8 text-gray-400 hover:text-gray-800 flex items-center gap-2 mt-6">
+        <button
+          className="uppercase font-bold flex items-center gap-1"
+          onClick={() => navigate(-1)}
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+            fill="currentColor"
+            class="w-6 h-6"
+          >
+            <path
+              fill-rule="evenodd"
+              d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25zm-4.28 9.22a.75.75 0 000 1.06l3 3a.75.75 0 101.06-1.06l-1.72-1.72h5.69a.75.75 0 000-1.5h-5.69l1.72-1.72a.75.75 0 00-1.06-1.06l-3 3z"
+              clip-rule="evenodd"
+            />
+          </svg>
+          BACK
+        </button>
+      </div>
       <h1 className="font-black text-3xl">Project</h1>
       {showProjectDeleteAlert && msg && <Alert alert={alert} />}
       <div className=" bg-white shadow mt-4 rounded-lg p-4">
-        <div className=" flex justify-between items-center">
+        <div className="flex justify-between items-center">
           <div>
             <p className="flex-1 font-bold text-3xl">
               {name}
-              <span className="text-lg font-semibold text-gray-500 uppercase">
+              <span className="text-2xl font-semibold text-gray-500 uppercase p-2">
                 {""} {client}
               </span>
             </p>
-            <p className="font-bold text-xl">{description}</p>
-            <p className="font-bold text-xl">{formatDate(deadline)}</p>
+            <p className="text-xl my-2">{description}</p>
+            <p className="text-xl ">{formatDate(deadline)}</p>
           </div>
           <div>
             <div className="flex items-center gap-2 text-gray-400 hover:text-yellow-500">
@@ -132,7 +173,7 @@ const Project = () => {
         <p className="font-black text-2xl">Collaborators</p>
         <Link
           to={`/projects/new-collaborator/${project._id}`}
-          className="text-gray-400 hover:text-sky-600 uppercase font-bold flex items-center"
+          className="text-gray-400 hover:text-sky-600 uppercase font-bold flex items-center p-4"
         >
           {" "}
           <svg

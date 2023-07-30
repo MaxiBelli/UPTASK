@@ -3,12 +3,7 @@ import { useParams } from "react-router-dom";
 import { Dialog, Transition } from "@headlessui/react";
 import useProjects from "../hooks/useProjects";
 import Alert from "../../components/Alert";
-
-const PRIORITY = [
-  { name: "Low", colorClass: "bg-green-500" },
-  { name: "Medium", colorClass: "bg-yellow-500" },
-  { name: "High", colorClass: "bg-red-500" },
-];
+import PRIORITY from "../constants/priority";
 
 const ModalTaskForm = () => {
   const [id, setId] = useState("");
@@ -49,14 +44,24 @@ const ModalTaskForm = () => {
       return;
     }
 
-    await submitTask({
-      id,
-      name,
-      description,
-      deadline,
-      priority,
-      project: params.id,
-    });
+    if (task._id) {
+      await submitTask({
+        id,
+        name,
+        description,
+        deadline,
+        priority,
+        project: params.id,
+      });
+    } else {
+      await submitTask({
+        name,
+        description,
+        deadline,
+        priority,
+        project: params.id,
+      });
+    }
 
     setName("");
     setDescription("");
@@ -130,7 +135,7 @@ const ModalTaskForm = () => {
                 <div className="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left w-full">
                   <Dialog.Title
                     as="h3"
-                    className="text-center text-3xl leading-6 font-bold text-gray-900"
+                    className="text-center text-3xl leading-6 font-black text-gray-900"
                   >
                     {id ? "Edit Task" : "Create Task"}
                   </Dialog.Title>
@@ -201,7 +206,7 @@ const ModalTaskForm = () => {
                             type="button"
                             className={`py-2 px-4 rounded-md text-white font-bold ${
                               priority === option.name
-                                ? option.colorClass
+                                ? option.bgColor
                                 : "bg-gray-300 hover:bg-gray-400"
                             } w-24`}
                             onClick={() => setPriority(option.name)}
