@@ -190,8 +190,8 @@ const Project = () => {
         title={modalTaskDelete ? "Delete Task" : "Delete Project"}
         message={
           modalTaskDelete
-            ? "A deleted Task cannot be recovered."
-            : "A deleted Project cannot be recovered."
+            ? "A deleted Task cannot be recovered"
+            : "A deleted Project cannot be recovered"
         }
         onDeleteConfirmed={() => {
           if (modalTaskDelete) {
