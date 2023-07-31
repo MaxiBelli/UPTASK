@@ -1,11 +1,12 @@
 import { useEffect, useState } from "react";
 import { useParams, Link, useNavigate } from "react-router-dom";
 import useProjects from "../hooks/useProjects";
+import { formatDate } from "../helpers/formatDate";
 import ModalTaskForm from "../components/ModalTaskForm";
 import ModalDelete from "../components/ModalDelete";
 import Task from "../components/Task";
 import Alert from "../../components/Alert";
-import { formatDate } from "../helpers/formatDate";
+import Collaborator from "../components/Collaborator";
 
 const Project = () => {
   const params = useParams();
@@ -59,27 +60,7 @@ const Project = () => {
           BACK
         </button>
       </div>
-      <div className="absolute top-20 right-8 text-gray-400 hover:text-gray-800 flex items-center gap-2 mt-6">
-        <button
-          className="uppercase font-bold flex items-center gap-1"
-          onClick={() => navigate(-1)}
-        >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 24 24"
-            fill="currentColor"
-            class="w-6 h-6"
-          >
-            <path
-              fill-rule="evenodd"
-              d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25zm-4.28 9.22a.75.75 0 000 1.06l3 3a.75.75 0 101.06-1.06l-1.72-1.72h5.69a.75.75 0 000-1.5h-5.69l1.72-1.72a.75.75 0 00-1.06-1.06l-3 3z"
-              clip-rule="evenodd"
-            />
-          </svg>
-          BACK
-        </button>
-      </div>
-      <h1 className="font-black text-3xl">Project</h1>
+      <h1 className="font-black text-4xl">Project</h1>
       {showProjectDeleteAlert && msg && <Alert alert={alert} />}
       <div className=" bg-white shadow mt-4 rounded-lg p-4">
         <div className="flex justify-between items-center">
@@ -156,7 +137,7 @@ const Project = () => {
         </svg>
         New Task
       </button>
-      <p className="font-black text-2xl mt-10">Tasks</p>
+      <p className="font-black text-3xl mt-10">Tasks</p>
 
       {showTaskDeleteAlert && msg && <Alert alert={alert} />}
 
@@ -164,13 +145,13 @@ const Project = () => {
         {project.tasks?.length ? (
           project.tasks?.map((task) => <Task key={task._id} task={task} />)
         ) : (
-          <p className="text-center text-xl text-gray-500 font-bold p-5">
+          <p className="text-center text-xl text-gray-800 font-bold p-5">
             There are no tasks in this project
           </p>
         )}
       </div>
       <div className="flex justify-between items-center mt-10">
-        <p className="font-black text-2xl">Collaborators</p>
+        <p className="font-black text-3xl">Collaborators</p>
         <Link
           to={`/projects/new-collaborator/${project._id}`}
           className="text-gray-400 hover:text-sky-600 uppercase font-bold flex items-center p-4"
@@ -190,6 +171,15 @@ const Project = () => {
           </svg>
           Add
         </Link>
+      </div>
+      <div className="bg-white shadow mt-5 rounded-lg">
+        {project.collaborators?.length ? (
+          project.collaborators?.map((collaborator) => <Collaborator key={collaborator._id} collaborator={collaborator} />)
+        ) : (
+          <p className="text-center text-lg text-gray-800 font-bold p-5">
+            There are no collaborators in this project
+          </p>
+        )}
       </div>
       <ModalTaskForm />
       <ModalDelete

@@ -31,8 +31,10 @@ const createProject = async (req, res) => {
 const getProject = async (req, res) => {
   const { id } = req.params;
 
-  // Find the project by its ID and populate its 'tasks' field with task details
-  const project = await Project.findById(id).populate("tasks");
+  // Find the project by its ID and populate its 'tasks' and 'collaborators' fields with details of these
+  const project = await Project.findById(id)
+    .populate("tasks")
+    .populate("collaborators", "name email");
 
   if (!project) {
     const error = new Error("Not Found");
