@@ -144,7 +144,10 @@ const ProjectsProvider = ({ children }) => {
       const { data } = await clientAxios(`/projects/${id}`, config);
       setProject(data);
     } catch (error) {
-      console.log(error);
+      setAlert({
+        msg: error.response.data.msg,
+        error: true
+      })
     } finally {
       setLoading(false);
     }
@@ -320,6 +323,7 @@ const ProjectsProvider = ({ children }) => {
     }
   };
 
+  // SUBMIT COLLABORATOR
   const submitCollaborator = async (email) => {
     setLoading(true);
     try {
@@ -351,10 +355,48 @@ const ProjectsProvider = ({ children }) => {
     }
   };
 
+
+  // ADD COLLABORATOR
+  const addCollaborator = async (email) => {
+    try {
+      const token = localStorage.getItem("token");
+      if (!token) return;
+
+      const config = {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      };
+      const { data } = await clientAxios.post(
+        `/projects/collaborators/${project._id}`,
+        email,
+        config
+      );
+
+      setAlert({
+        msg: data.msg,
+        error: false,
+      });
+      setCollaborator({});
+
+      setTimeout(() => {
+        setAlert({});
+      }, 3000);
+    } catch (error) {
+      setAlert({
+        msg: error.response.data.msg,
+        error: true,
+      });
+    }
+  };
+
   return (
     <ProjectsContext.Provider
       value={{
+        addCollaborator,
         alert,
+        collaborator,
         deleteProject,
         deleteTask,
         getProject,
