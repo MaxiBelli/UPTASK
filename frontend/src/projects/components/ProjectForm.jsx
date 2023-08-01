@@ -10,7 +10,7 @@ const ProjectForm = () => {
   const [deadline, setDeadline] = useState("");
   const [client, setClient] = useState("");
 
-  const [showSubmit, setShowSubmit] = useState(true);
+  const [showSubmitButton, setShowSubmitButton] = useState(true);
 
   const params = useParams();
   const { showAlert , alert, submitProject , project } = useProjects();
@@ -46,7 +46,7 @@ const ProjectForm = () => {
     setDeadline("");
     setClient("");
 
-    setShowSubmit(false);
+    setShowSubmitButton(false);
   };
 
   const { msg } = alert;
@@ -128,7 +128,7 @@ const ProjectForm = () => {
         />
       </div>
 
-      {showSubmit && (
+      {showSubmitButton && (
         <input
           type="submit"
           value={id ? "Update Project" : "Create Project"}

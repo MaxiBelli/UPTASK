@@ -1,6 +1,6 @@
 import { formatDate } from "../helpers/formatDate";
 import useProjects from "../hooks/useProjects";
-import PRIORITY from "../constants/priority";
+import { PRIORITY } from "../constants/priorityTask";
 
 const Task = ({ task }) => {
   const { handleModalTaskEdit, handleModalTaskDelete } = useProjects();

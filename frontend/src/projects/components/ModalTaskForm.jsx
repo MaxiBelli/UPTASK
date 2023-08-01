@@ -3,7 +3,7 @@ import { useParams } from "react-router-dom";
 import { Dialog, Transition } from "@headlessui/react";
 import useProjects from "../hooks/useProjects";
 import Alert from "../../components/Alert";
-import PRIORITY from "../constants/priority";
+import { PRIORITY } from "../constants/priorityTask";
 
 const ModalTaskForm = () => {
   const [id, setId] = useState("");
@@ -12,25 +12,19 @@ const ModalTaskForm = () => {
   const [deadline, setDeadline] = useState("");
   const [priority, setPriority] = useState("");
 
+  const [showSubmitButton, setShowSubmitButton] = useState(true);
+
   const params = useParams();
 
   const { modalTaskForm, handleModalTask, showAlert, alert, submitTask, task } =
     useProjects();
 
   useEffect(() => {
-    if (task?._id) {
-      setId(task._id);
-      setName(task.name);
-      setDescription(task.description);
-      setDeadline(task.deadline?.split("T")[0]);
-      setPriority(task.priority);
-      return;
-    }
-    setId("");
-    setName("");
-    setDescription("");
-    setDeadline("");
-    setPriority("");
+    setId(task?._id || "");
+    setName(task?.name || "");
+    setDescription(task?.description || "");
+    setDeadline(task?.deadline?.split("T")[0] || "");
+    setPriority(task?.priority || "");
   }, [task]);
 
   const handleSubmit = async (e) => {
@@ -67,6 +61,8 @@ const ModalTaskForm = () => {
     setDescription("");
     setDeadline("");
     setPriority("");
+
+    setShowSubmitButton(false);
   };
 
   const { msg } = alert;
@@ -112,7 +108,7 @@ const ModalTaskForm = () => {
               <div className="hidden sm:block absolute top-0 right-0 pt-4 pr-4">
                 <button
                   type="button"
-                  className="bg-white rounded-md text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                  className="bg-white rounded-md text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-black"
                   onClick={handleModalTask}
                 >
                   <span className="sr-only">Close</span>
@@ -217,11 +213,13 @@ const ModalTaskForm = () => {
                       </div>
                     </div>
 
-                    <input
-                      type="submit"
-                      className="bg-sky-600 hover:bg-sky-700 w-full p-3 text-white uppercase font-bold cursor-pointer transition-colors rounded text-sm"
-                      value={id ? "Save Changes" : "Create Task"}
-                    />
+                    {showSubmitButton && (
+                      <input
+                        type="submit"
+                        className="bg-sky-600 hover:bg-sky-700 w-full p-3 text-white uppercase font-bold cursor-pointer transition-colors rounded text-sm"
+                        value={id ? "Save Changes" : "Create Task"}
+                      />
+                    )}
                   </form>
                 </div>
               </div>

@@ -2,7 +2,11 @@ import useProjects from "../hooks/useProjects";
 import ModalDelete from "./ModalDelete";
 
 const Collaborator = ({ collaborator }) => {
-  const { handleModalCollaboratorDelete, modalCollaboratorDelete } = useProjects();
+  const {
+    handleModalCollaboratorDelete,
+    modalCollaboratorDelete,
+    deleteCollaborator,
+  } = useProjects();
 
   const { name, email } = collaborator;
 
@@ -39,11 +43,9 @@ const Collaborator = ({ collaborator }) => {
       <ModalDelete
         isOpen={modalCollaboratorDelete}
         onClose={handleModalCollaboratorDelete}
-        title={"Delete Collaborator"}
-        message={"Once removed, this person will not be able to access the project"}
-        onDeleteConfirmed={() => {
-          
-        }}
+        title="Delete Collaborator"
+        message="Once removed, this person will not be able to access the project"
+        onDeleteConfirmed={() => deleteCollaborator(collaborator)}
       />
     </>
   );

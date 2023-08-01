@@ -174,7 +174,26 @@ const addCollaborator = async (req, res) => {
   res.json({ msg: "Collaborator Added Successfully" });
 };
 
-const removeCollaborator = async (req, res) => {};
+
+// REMOVE COLLABORATOR
+const removeCollaborator = async (req, res) => {
+  const project = await Project.findById(req.params.id);
+
+  if (!project) {
+    const error = new Error("Project Not Found");
+    return res.status(404).json({ msg: error.message });
+  }
+
+  if (project.creator.toString() !== req.user._id.toString()) {
+    const error = new Error("Invalid Action");
+    return res.status(404).json({ msg: error.message });
+  }
+
+  // It's fine, we can remove the collaborator
+  project.collaborators.pull(req.body.id);
+  await project.save();
+  res.json({ msg: "Collaborator Removed Successfully" });
+};
 
 export {
   getProjects,

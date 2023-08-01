@@ -23,7 +23,7 @@ const EditProject = () => {
     getProject(params.id);
   }, []);
 
-  const handleDeleteProject = () => {
+  const handleProjectDelete = () => {
     deleteProject(params.id);
     handleModalProjectDelete();
   };
@@ -88,7 +88,7 @@ const EditProject = () => {
         onClose={handleModalProjectDelete}
         title="Delete Project"
         message="A deleted Project cannot be recovered."
-        onDeleteConfirmed={() => handleDeleteProject()}
+        onDeleteConfirmed={() => handleProjectDelete()}
       />
     </>
   );
