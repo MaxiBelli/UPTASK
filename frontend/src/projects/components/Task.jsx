@@ -11,7 +11,7 @@ const Task = ({ task }) => {
     <div className="border-b p-4 flex justify-between items-center">
       <div className="flex flex-col items-start">
         <p className="mb-1 text-xl font-bold">{name}</p>
-        <p className="mb-1 text-base text-gray-500">{description}</p>
+        <p className="mb-1 text-base text-gray-700">{description}</p>
         <p className="mb-1 text-base">{formatDate(deadline)}</p>
         <span
           className={`py-1 rounded-lg text-center mt-1 text-white font-bold text-sm ${
@@ -24,7 +24,7 @@ const Task = ({ task }) => {
 
       <div className="flex flex-col lg:flex-row gap-2">
         <button
-          className=" flex items-center gap-2 bg-yellow-400 px-4 py-3 text-white uppercase font-bold text-sm rounded-lg"
+          className=" flex items-center gap-2 bg-yellow-500 px-4 py-3 text-white uppercase font-bold text-sm rounded-lg"
           onClick={() => handleModalTaskEdit(task)}
         >
           <svg

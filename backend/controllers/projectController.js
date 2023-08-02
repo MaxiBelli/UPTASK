@@ -5,10 +5,9 @@ import User from "../models/User.js";
 // GET PROJECTS
 const getProjects = async (req, res) => {
   // Find projects where the 'creator' field equals the user making the request
-  const projects = await Project.find()
-    .where("creator")
-    .equals(req.user)
-    .select("-tasks");
+  const projects = await Project.find({
+    $or: [{ collaborators: { $in: req.user } }, { creator: { $in: req.user } }],
+  }).select("-tasks");
   res.json(projects);
 };
 
@@ -42,7 +41,12 @@ const getProject = async (req, res) => {
   }
 
   // Verify if the user making the request is the creator of the project
-  if (project.creator.toString() !== req.user._id.toString()) {
+  if (
+    project.creator.toString() !== req.user._id.toString() &&
+    !project.collaborators.some(
+      (collaborator) => collaborator._id.toString() === req.user._id.toString()
+    )
+  ) {
     const error = new Error("Invalid Action");
     return res.status(401).json({ msg: error.message });
   }
@@ -173,7 +177,6 @@ const addCollaborator = async (req, res) => {
   await project.save();
   res.json({ msg: "Collaborator Added Successfully" });
 };
-
 
 // REMOVE COLLABORATOR
 const removeCollaborator = async (req, res) => {

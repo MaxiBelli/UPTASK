@@ -39,14 +39,14 @@ const NewCollaborator = () => {
           BACK
         </button>
       </div>
-      <h1 className="font-black text-3xl">Project</h1>
+      <h1 className="font-black text-4xl">Project</h1>
 
       <div className=" bg-white shadow mt-4 rounded-lg p-4">
         <div className="flex justify-between items-center">
           <div>
-            <p className="flex-1 font-bold text-3xl">
+            <p className="flex-1 font-bold text-2xl">
               {name}
-              <span className="text-2xl font-semibold text-gray-500 uppercase p-2">
+              <span className="text-xl font-semibold text-gray-500 uppercase p-2">
                 {""} {client}
               </span>
             </p>
@@ -66,10 +66,10 @@ const NewCollaborator = () => {
         collaborator?._id && (
           <div className="flex justify-center mt-10">
             <div className="bg-white py-10 px-5 md:w-1/2 rounded-lg shadow w-full">
-              <h2 className="text-center mb-5 text-2xl font-bold">Result:</h2>
+              <h2 className="text-center mb-5 text-3xl font-black">Result</h2>
 
               <div className="bg-slate-100 p-2 rounded-lg flex justify-between items-center">
-                <p>{collaborator.name}</p>
+                <p className="font-bold">{collaborator.name}</p>
                 <p>{collaborator.email}</p>
                 <button
                   type="button"

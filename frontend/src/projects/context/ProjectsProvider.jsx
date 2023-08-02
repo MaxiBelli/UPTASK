@@ -144,6 +144,7 @@ const ProjectsProvider = ({ children }) => {
 
       const { data } = await clientAxios(`/projects/${id}`, config);
       setProject(data);
+      setAlert({})
     } catch (error) {
       setAlert({
         msg: error.response.data.msg,

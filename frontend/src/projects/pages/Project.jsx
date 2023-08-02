@@ -33,14 +33,14 @@ const Project = () => {
   const { name, client, description, deadline } = project;
   const [showProjectDeleteAlert, setShowProjectDeleteAlert] = useState(false);
   const [showTaskDeleteAlert, setShowTaskDeleteAlert] = useState(false);
-  const [showCollaboratorDeleteAlert, setShowCollaboratorDeleteAlert] =
-    useState(false);
-
-  if (loading) return "Loading...";
 
   const { msg } = alert;
 
-  return (
+  if (loading) return "Loading...";
+
+  return msg && alert.error ? (
+    <Alert alert={alert} />
+  ) : (
     <>
       <div className="absolute top-20 right-8 text-gray-400 hover:text-gray-800 flex items-center gap-2 mt-6">
         <button
@@ -67,14 +67,14 @@ const Project = () => {
       <div className=" bg-white shadow mt-4 rounded-lg p-4">
         <div className="flex justify-between items-center">
           <div>
-            <p className="flex-1 font-bold text-3xl">
+            <p className="flex-1 font-bold text-2xl">
               {name}
-              <span className="text-2xl font-semibold text-gray-500 uppercase p-2">
+              <span className="text-xl font-semibold text-gray-500 uppercase p-2">
                 {""} {client}
               </span>
             </p>
-            <p className="text-xl my-2">{description}</p>
-            <p className="text-xl ">{formatDate(deadline)}</p>
+            <p className="text-lg text-gray-600 my-2">{description}</p>
+            <p className="text-lg ">{formatDate(deadline)}</p>
           </div>
           <div>
             <div className="flex items-center gap-2 text-gray-400 hover:text-yellow-500">

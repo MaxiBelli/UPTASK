@@ -12,8 +12,6 @@ const ModalTaskForm = () => {
   const [deadline, setDeadline] = useState("");
   const [priority, setPriority] = useState("");
 
-  const [showSubmitButton, setShowSubmitButton] = useState(true);
-
   const params = useParams();
 
   const { modalTaskForm, handleModalTask, showAlert, alert, submitTask, task } =
@@ -61,8 +59,6 @@ const ModalTaskForm = () => {
     setDescription("");
     setDeadline("");
     setPriority("");
-
-    setShowSubmitButton(false);
   };
 
   const { msg } = alert;
@@ -213,13 +209,11 @@ const ModalTaskForm = () => {
                       </div>
                     </div>
 
-                    {showSubmitButton && (
-                      <input
-                        type="submit"
-                        className="bg-sky-600 hover:bg-sky-700 w-full p-3 text-white uppercase font-bold cursor-pointer transition-colors rounded text-sm"
-                        value={id ? "Save Changes" : "Create Task"}
-                      />
-                    )}
+                    <input
+                      type="submit"
+                      className="bg-sky-600 hover:bg-sky-700 w-full p-3 text-white uppercase font-bold cursor-pointer transition-colors rounded text-sm"
+                      value={id ? "Save Changes" : "Create Task"}
+                    />
                   </form>
                 </div>
               </div>
