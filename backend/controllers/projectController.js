@@ -1,10 +1,9 @@
 import Project from "../models/Project.js";
-import Task from "../models/Task.js";
 import User from "../models/User.js";
 
 // GET PROJECTS
 const getProjects = async (req, res) => {
-  // Find projects where the 'creator' field equals the user making the request
+  // Find projects where the 'creator' field or 'collaborators' field contains the user making the request
   const projects = await Project.find({
     $or: [{ collaborators: { $in: req.user } }, { creator: { $in: req.user } }],
   }).select("-tasks");
@@ -13,7 +12,7 @@ const getProjects = async (req, res) => {
 
 // CREATE PROJECT
 const createProject = async (req, res) => {
-  // Create a new project with the request body and set the creator to the user's ID
+  // Create a new project instance with the request body and set the creator to the user's ID
   const project = new Project(req.body);
   project.creator = req.user._id;
 
@@ -30,24 +29,24 @@ const createProject = async (req, res) => {
 const getProject = async (req, res) => {
   const { id } = req.params;
 
-  // Find the project by its ID and populate its 'tasks' and 'collaborators' fields with details of these
+  // Find the project by its ID and populate its 'tasks' and 'collaborators' fields with relevant details
   const project = await Project.findById(id)
     .populate("tasks")
     .populate("collaborators", "name email");
 
   if (!project) {
-    const error = new Error("Not Found");
+    const error = new Error("Project not found");
     return res.status(404).json({ msg: error.message });
   }
 
-  // Verify if the user making the request is the creator of the project
+  // Verify if the user making the request is the creator of the project or a collaborator
   if (
     project.creator.toString() !== req.user._id.toString() &&
     !project.collaborators.some(
       (collaborator) => collaborator._id.toString() === req.user._id.toString()
     )
   ) {
-    const error = new Error("Invalid Action");
+    const error = new Error("Unauthorized access");
     return res.status(401).json({ msg: error.message });
   }
 
@@ -57,18 +56,15 @@ const getProject = async (req, res) => {
 // EDIT PROJECT
 const editProject = async (req, res) => {
   const { id } = req.params;
-
-  // Find the project by its ID
   const project = await Project.findById(id);
 
   if (!project) {
-    const error = new Error("Not Found");
+    const error = new Error("Project not found");
     return res.status(404).json({ msg: error.message });
   }
 
-  // Verify if the user making the request is the creator of the project
   if (project.creator.toString() !== req.user._id.toString()) {
-    const error = new Error("Invalid Action");
+    const error = new Error("Unauthorized action");
     return res.status(401).json({ msg: error.message });
   }
 
@@ -90,25 +86,23 @@ const editProject = async (req, res) => {
 // DELETE PROJECT
 const deleteProject = async (req, res) => {
   const { id } = req.params;
-
-  // Find the project by its ID
   const project = await Project.findById(id);
 
   if (!project) {
-    const error = new Error("Not Found");
+    const error = new Error("Project not found");
     return res.status(404).json({ msg: error.message });
   }
 
   // Verify if the user making the request is the creator of the project
   if (project.creator.toString() !== req.user._id.toString()) {
-    const error = new Error("Invalid Action");
+    const error = new Error("Unauthorized action");
     return res.status(401).json({ msg: error.message });
   }
 
   try {
     // Delete the project from the database and respond with a success message
     await project.deleteOne();
-    res.json({ msg: "Project Deleted Successfully" });
+    res.json({ msg: "Project deleted successfully" });
   } catch (error) {
     console.log(error);
   }
@@ -127,24 +121,21 @@ const searchCollaborator = async (req, res) => {
     return res.status(404).json({ msg: error.message });
   }
 
-  // Respond with the user data (excluding sensitive information)
   res.json(user);
 };
 
 // ADD COLLABORATOR
 const addCollaborator = async (req, res) => {
-  // Find the project by its ID in the database
-  const project = await Project.findById(req.params.id);
+  const { id } = req.params;
+  const project = await Project.findById(id);
 
-  // Check if the project exists
   if (!project) {
-    const error = new Error("Project Not Found");
+    const error = new Error("Project not found");
     return res.status(404).json({ msg: error.message });
   }
 
-  // Verify if the user making the request is the creator of the project
   if (project.creator.toString() !== req.user._id.toString()) {
-    const error = new Error("Invalid Action");
+    const error = new Error("Unauthorized action");
     return res.status(404).json({ msg: error.message });
   }
 
@@ -154,7 +145,6 @@ const addCollaborator = async (req, res) => {
     "-confirmed -createdAt -password -token -updatedAt -__v "
   );
 
-  // Check if the user exists
   if (!user) {
     const error = new Error("User not found");
     return res.status(404).json({ msg: error.message });
@@ -175,27 +165,28 @@ const addCollaborator = async (req, res) => {
   // If everything is fine, add the new collaborator to the project's collaborators list
   project.collaborators.push(user._id);
   await project.save();
-  res.json({ msg: "Collaborator Added Successfully" });
+  res.json({ msg: "Collaborator added successfully" });
 };
 
 // REMOVE COLLABORATOR
 const removeCollaborator = async (req, res) => {
-  const project = await Project.findById(req.params.id);
+  const { id } = req.params;
+  const project = await Project.findById(id);
 
   if (!project) {
-    const error = new Error("Project Not Found");
+    const error = new Error("Project not found");
     return res.status(404).json({ msg: error.message });
   }
 
   if (project.creator.toString() !== req.user._id.toString()) {
-    const error = new Error("Invalid Action");
+    const error = new Error("Unauthorized action");
     return res.status(404).json({ msg: error.message });
   }
 
   // It's fine, we can remove the collaborator
   project.collaborators.pull(req.body.id);
   await project.save();
-  res.json({ msg: "Collaborator Removed Successfully" });
+  res.json({ msg: "Collaborator removed successfully" });
 };
 
 export {

@@ -371,19 +371,22 @@ const ProjectsProvider = ({ children }) => {
       const config = getAuthConfig();
       if (!config) return;
 
-      const { data } = await clientAxios.post(`/tasks/status/${id}`, {}, config);
+      const { data } = await clientAxios.post(
+        `/tasks/status/${id}`,
+        {},
+        config
+      );
 
       const updatedProject = { ...project };
 
-      updatedProject.tasks = updatedProject.tasks.map(
-        (taskState) => taskState._id === data._id ? data : taskState
+      updatedProject.tasks = updatedProject.tasks.map((taskState) =>
+        taskState._id === data._id ? data : taskState
       );
 
       setProject(updatedProject);
 
       setTask({});
       setAlert({});
-
     } catch (error) {
       console.log(error.response);
     }
@@ -403,13 +406,13 @@ const ProjectsProvider = ({ children }) => {
         handleModalCollaboratorDelete,
         handleModalProjectDelete,
         handleModalTask,
-        handleModalTaskEdit,
         handleModalTaskDelete,
+        handleModalTaskEdit,
         loading,
         modalCollaboratorDelete,
-        modalTaskForm,
-        modalTaskDelete,
         modalProjectDelete,
+        modalTaskDelete,
+        modalTaskForm,
         project,
         projects,
         showAlert,

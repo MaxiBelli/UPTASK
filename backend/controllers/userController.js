@@ -1,18 +1,22 @@
 import User from "../models/User.js";
 import generateId from "../helpers/generateId.js";
 import generateJWT from "../helpers/generateJWT.js";
-import { emailRegistration , emailForgotPassword } from "../helpers/email.js";
+import { emailRegistration, emailForgotPassword } from "../helpers/email.js";
 
+// REGISTER USER
 const register = async (req, res) => {
-  // Avoid duplicate registrations
   const { email } = req.body;
+
+  // Check if the user is already registered
   const userExists = await User.findOne({ email });
 
   if (userExists) {
     const error = new Error("User already Registered");
     return res.status(400).json({ msg: error.message });
   }
+
   try {
+    // Create a new user and save it to the database
     const user = new User(req.body);
     user.token = generateId();
     await user.save();
@@ -32,6 +36,7 @@ const register = async (req, res) => {
   }
 };
 
+// AUTHENTICATE USER
 const authenticate = async (req, res) => {
   const { email, password } = req.body;
 
@@ -62,6 +67,7 @@ const authenticate = async (req, res) => {
   }
 };
 
+// CONFIRM USER
 const confirm = async (req, res) => {
   const { token } = req.params;
   const userConfirm = await User.findOne({ token });
@@ -71,6 +77,7 @@ const confirm = async (req, res) => {
   }
 
   try {
+    // Confirm the user and save the changes
     userConfirm.confirmed = true;
     userConfirm.token = "";
     await userConfirm.save();
@@ -80,6 +87,7 @@ const confirm = async (req, res) => {
   }
 };
 
+// FORGOT PASSWORD
 const forgotPassword = async (req, res) => {
   const { email } = req.body;
   const user = await User.findOne({ email });
@@ -89,21 +97,26 @@ const forgotPassword = async (req, res) => {
   }
 
   try {
+    // Generate a new token and save it to the database
     user.token = generateId();
     await user.save();
 
+    // Send the password reset email
     emailForgotPassword({
       email: user.email,
       name: user.name,
       token: user.token,
     });
 
-    res.json({ msg: `Please Check the Email Address ${email} for Instructions to Reset your Password.` });
+    res.json({
+      msg: `Please Check the Email Address ${email} for Instructions to Reset your Password.`,
+    });
   } catch (error) {
     console.log(error);
   }
 };
 
+// CHECK TOKEN
 const checkToken = async (req, res) => {
   const { token } = req.params;
 
@@ -117,6 +130,7 @@ const checkToken = async (req, res) => {
   }
 };
 
+// NEW PASSWORD
 const newPassword = async (req, res) => {
   const { token } = req.params;
   const { password } = req.body;
@@ -124,6 +138,7 @@ const newPassword = async (req, res) => {
   const user = await User.findOne({ token });
 
   if (user) {
+    // Update the user's password and clear the token
     user.password = password;
     user.token = "";
     try {
@@ -138,6 +153,7 @@ const newPassword = async (req, res) => {
   }
 };
 
+// USER PROFILE
 const profile = async (req, res) => {
   const { user } = req;
 
