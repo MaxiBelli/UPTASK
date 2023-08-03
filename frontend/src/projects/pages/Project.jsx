@@ -40,9 +40,7 @@ const Project = () => {
 
   if (loading) return "Loading...";
 
-  return msg && alert.error ? (
-    <Alert alert={alert} />
-  ) : (
+  return (
     <>
       <div className="absolute top-20 right-8 text-gray-400 hover:text-gray-800 flex items-center gap-2 mt-6">
         <button

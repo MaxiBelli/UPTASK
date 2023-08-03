@@ -8,6 +8,7 @@ const Projects = () => {
   const navigate = useNavigate();
 
   const { projects, alert } = useProjects();
+  
   const { msg } = alert;
 
   return (
