@@ -1,5 +1,6 @@
 import { useState, useEffect, createContext } from "react";
 import { useNavigate } from "react-router-dom";
+import { getAuthConfig } from "../helpers/getAuthConfig";
 import clientAxios from "../../config/clientAxios";
 
 const ProjectsContext = createContext();
@@ -8,7 +9,7 @@ const ProjectsProvider = ({ children }) => {
   const [projects, setProjects] = useState([]);
   const [project, setProject] = useState({});
   const [task, setTask] = useState({});
-  const [collaborator, setCollaborator] = useState({})
+  const [collaborator, setCollaborator] = useState({});
   const [alert, setAlert] = useState({});
   const [loading, setLoading] = useState(false);
   const [modalTaskForm, setModalTaskForm] = useState(false);
@@ -21,15 +22,9 @@ const ProjectsProvider = ({ children }) => {
   useEffect(() => {
     const getProjects = async () => {
       try {
-        const token = localStorage.getItem("token");
-        if (!token) return;
+        const config = getAuthConfig();
+        if (!config) return;
 
-        const config = {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-        };
         const { data } = await clientAxios("/projects", config);
         setProjects(data);
       } catch (error) {
@@ -60,15 +55,8 @@ const ProjectsProvider = ({ children }) => {
   // EDIT PROJECT
   const editProject = async (project) => {
     try {
-      const token = localStorage.getItem("token");
-      if (!token) return;
-
-      const config = {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-      };
+      const config = getAuthConfig();
+      if (!config) return;
 
       const { data } = await clientAxios.put(
         `/projects/${project.id}`,
@@ -100,15 +88,8 @@ const ProjectsProvider = ({ children }) => {
   // NEW PROJECT
   const newProject = async (project) => {
     try {
-      const token = localStorage.getItem("token");
-      if (!token) return;
-
-      const config = {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-      };
+      const config = getAuthConfig();
+      if (!config) return;
 
       const { data } = await clientAxios.post("/projects", project, config);
 
@@ -132,24 +113,17 @@ const ProjectsProvider = ({ children }) => {
   const getProject = async (id) => {
     setLoading(true);
     try {
-      const token = localStorage.getItem("token");
-      if (!token) return;
-
-      const config = {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-      };
+      const config = getAuthConfig();
+      if (!config) return;
 
       const { data } = await clientAxios(`/projects/${id}`, config);
       setProject(data);
-      setAlert({})
+      setAlert({});
     } catch (error) {
       setAlert({
         msg: error.response.data.msg,
-        error: true
-      })
+        error: true,
+      });
     } finally {
       setLoading(false);
     }
@@ -158,15 +132,8 @@ const ProjectsProvider = ({ children }) => {
   // DELETE PROJECT
   const deleteProject = async (id) => {
     try {
-      const token = localStorage.getItem("token");
-      if (!token) return;
-
-      const config = {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-      };
+      const config = getAuthConfig();
+      if (!config) return;
 
       const { data } = await clientAxios.delete(`/projects/${id}`, config);
 
@@ -213,15 +180,8 @@ const ProjectsProvider = ({ children }) => {
   // CREATE TASK
   const createTask = async (task) => {
     try {
-      const token = localStorage.getItem("token");
-      if (!token) return;
-
-      const config = {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-      };
+      const config = getAuthConfig();
+      if (!config) return;
 
       const { data } = await clientAxios.post("/tasks", task, config);
 
@@ -246,15 +206,8 @@ const ProjectsProvider = ({ children }) => {
   // EDIT TASK
   const editTask = async (task) => {
     try {
-      const token = localStorage.getItem("token");
-      if (!token) return;
-
-      const config = {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-      };
+      const config = getAuthConfig();
+      if (!config) return;
 
       const { data } = await clientAxios.put(`/tasks/${task.id}`, task, config);
 
@@ -293,15 +246,8 @@ const ProjectsProvider = ({ children }) => {
   // DELETE TASK
   const deleteTask = async () => {
     try {
-      const token = localStorage.getItem("token");
-      if (!token) return;
-
-      const config = {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-      };
+      const config = getAuthConfig();
+      if (!config) return;
 
       const { data } = await clientAxios.delete(`/tasks/${task._id}`, config);
 
@@ -329,15 +275,8 @@ const ProjectsProvider = ({ children }) => {
   const submitCollaborator = async (email) => {
     setLoading(true);
     try {
-      const token = localStorage.getItem("token");
-      if (!token) return;
-
-      const config = {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-      };
+      const config = getAuthConfig();
+      if (!config) return;
 
       const { data } = await clientAxios.post(
         "/projects/collaborators",
@@ -357,19 +296,12 @@ const ProjectsProvider = ({ children }) => {
     }
   };
 
-
   // ADD COLLABORATOR
   const addCollaborator = async (email) => {
     try {
-      const token = localStorage.getItem("token");
-      if (!token) return;
+      const config = getAuthConfig();
+      if (!config) return;
 
-      const config = {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-      };
       const { data } = await clientAxios.post(
         `/projects/collaborators/${project._id}`,
         email,
@@ -393,24 +325,18 @@ const ProjectsProvider = ({ children }) => {
     }
   };
 
-   // HANDLE MODAL COLLABORATOR DELETE
-   const handleModalCollaboratorDelete = (collaborator) => {
-     setModalCollaboratorDelete(!modalCollaboratorDelete);
-     setCollaborator(collaborator)
+  // HANDLE MODAL COLLABORATOR DELETE
+  const handleModalCollaboratorDelete = (collaborator) => {
+    setModalCollaboratorDelete(!modalCollaboratorDelete);
+    setCollaborator(collaborator);
   };
 
   // DELETE COLLABORATOR
   const deleteCollaborator = async () => {
     try {
-      const token = localStorage.getItem("token");
-      if (!token) return;
+      const config = getAuthConfig();
+      if (!config) return;
 
-      const config = {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-      };
       const { data } = await clientAxios.post(
         `/projects/remove-collaborator/${project._id}`,
         { id: collaborator._id },
@@ -439,12 +365,37 @@ const ProjectsProvider = ({ children }) => {
     }
   };
 
+  // COMPLETE TASK
+  const completeTask = async (id) => {
+    try {
+      const config = getAuthConfig();
+      if (!config) return;
+
+      const { data } = await clientAxios.post(`/tasks/status/${id}`, {}, config);
+
+      const updatedProject = { ...project };
+
+      updatedProject.tasks = updatedProject.tasks.map(
+        (taskState) => taskState._id === data._id ? data : taskState
+      );
+
+      setProject(updatedProject);
+
+      setTask({});
+      setAlert({});
+
+    } catch (error) {
+      console.log(error.response);
+    }
+  };
+
   return (
     <ProjectsContext.Provider
       value={{
         addCollaborator,
         alert,
         collaborator,
+        completeTask,
         deleteCollaborator,
         deleteProject,
         deleteTask,
