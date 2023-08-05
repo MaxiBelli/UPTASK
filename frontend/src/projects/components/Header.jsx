@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import SVGIcons from "../../assets/icons/SVGIcons";
 
 const Header = () => {
   return (
@@ -11,18 +12,16 @@ const Header = () => {
             UpTask
           </h2>
         </div>
-        <input
-          type="search"
-          placeholder="Search Project"
-          className="rounded-lg lg:w-96 block p-2 border"
-        />
-        <div className="flex items-center gap-4">
-          <Link to="/projects" className=" text-xl font-bold uppercase">
+        <div className="flex flex-col md:flex-row items-center gap-4">
+          <Link to="/projects" className=" text-lg font-bold uppercase">
             Projects
           </Link>
+          <button type="button">
+            {SVGIcons.search}
+          </button>
           <button
             type="button"
-            className="text-white text-lg bg-sky-600 p-3 rounded-md uppercase font-bold"
+            className="text-white text-base bg-sky-600 p-3 rounded-md uppercase font-bold"
           >
             Logout
           </button>

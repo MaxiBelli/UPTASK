@@ -2,11 +2,19 @@ import { Outlet, Navigate } from "react-router-dom";
 import useAuth from "../../auth/hooks/useAuth";
 import Header from "../components/Header";
 import Sidebar from "../components/Sidebar";
+import Loader from "../components/Loader";
 
 const ProjectsLayout = () => {
   const { auth, loading } = useAuth();
 
-  if (loading) return "Loading...";
+  if (loading) {
+    return (
+      <div className="flex justify-center items-center h-screen">
+        <Loader />
+      </div>
+    );
+  }
+
   return (
     <>
       {auth._id ? (
@@ -16,7 +24,7 @@ const ProjectsLayout = () => {
           <div className="md:flex md:min-h-screen">
             <Sidebar />
 
-            <main className="p-10 flex-1 ">
+            <main className="p-10 flex-1">
               <Outlet />
             </main>
           </div>

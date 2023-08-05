@@ -3,7 +3,7 @@ import useAuth from "../../auth/hooks/useAuth";
 import SVGIcons from "../../assets/icons/SVGIcons";
 
 const ProjectPreview = ({ project }) => {
-  const auth = useAuth();
+  const { auth } = useAuth();
 
   const { name, _id, client, creator } = project;
 

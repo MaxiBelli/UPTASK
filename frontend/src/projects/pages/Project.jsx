@@ -1,18 +1,21 @@
+
 import { useEffect, useState } from "react";
-import { useParams, Link, useNavigate } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 import SVGIcons from "../../assets/icons/SVGIcons";
-import useProjects from "../hooks/useProjects";
-import useAdmin from "../../hooks/useAdmin";
 import { formatDate } from "../helpers/formatDate";
-import ModalTaskForm from "../components/ModalTaskForm";
-import ModalDelete from "../components/ModalDelete";
-import Task from "../components/Task";
+import useAdmin from "../../hooks/useAdmin";
+import useProjects from "../hooks/useProjects";
 import Alert from "../../components/Alert";
+import BackButton from "../components/BackButton";
 import Collaborator from "../components/Collaborator";
+import ModalDelete from "../components/ModalDelete";
+import ModalTaskForm from "../components/ModalTaskForm";
+import Task from "../components/Task";
+import Loader from "../components/Loader";
 
 const Project = () => {
   const params = useParams();
-  const navigate = useNavigate();
+ 
   const {
     getProject,
     project,
@@ -32,26 +35,20 @@ const Project = () => {
     getProject(params.id);
   }, []);
 
+  console.log(project);
+
   const { name, client, description, deadline } = project;
   const [showProjectDeleteAlert, setShowProjectDeleteAlert] = useState(false);
   const [showTaskDeleteAlert, setShowTaskDeleteAlert] = useState(false);
 
   const { msg } = alert;
 
-  if (loading) return "Loading...";
+  if (loading) return <Loader/>;
 
   return (
     <>
-      <div className="absolute top-20 right-8 text-gray-400 hover:text-gray-800 flex items-center gap-2 mt-6">
-        <button
-          className="uppercase font-bold flex items-center gap-1"
-          onClick={() => navigate(-1)}
-        >
-          {SVGIcons.back}
-          BACK
-        </button>
-      </div>
-      <h1 className="font-black text-4xl">Project</h1>
+      <BackButton />
+      <h1 className="text-3xl font-black">Project</h1>
       {showProjectDeleteAlert && msg && <Alert alert={alert} />}
       <div className="bg-white shadow mt-4 rounded-lg p-4">
         <div className="flex justify-between items-center">
@@ -62,13 +59,18 @@ const Project = () => {
                 {""} {client}
               </span>
             </p>
-            <p className="text-lg text-gray-600 my-2">{description}</p>
-            <p className="text-lg ">{formatDate(deadline)}</p>
+            <p className="text-xl text-gray-600 my-2">{description}</p>
+            <div className="flex items-center mb-1 text-base">
+              <div className="bg-gray-500 rounded-lg p-2 text-white flex items-center gap-2 font-bold">
+                {SVGIcons.calendar}
+                <span className="ml-2">{formatDate(deadline)}</span>
+              </div>
+            </div>
           </div>
 
           {admin && (
             <div>
-              <div className="flex items-center gap-2 text-gray-400 hover:text-yellow-500">
+              <div className="flex items-center gap-2 text-gray-400 hover:text-indigo-600">
                 <Link
                   to={`/projects/edit/${params.id}`}
                   className="uppercase font-bold flex items-center"
@@ -96,14 +98,13 @@ const Project = () => {
         <button
           onClick={handleModalTask}
           type="button"
-          className="text-base px-5 py-3 w-full md:w-auto rounded-lg uppercase font-bold bg-sky-400 text-white 
-        text-center mt-5 flex gap-2 items-center justify-center"
+          className="w-full md:w-auto px-5 py-3 mt-5 text-base font-bold uppercase text-white bg-sky-400 text-center flex items-center justify-center gap-2 rounded-lg"
         >
           {SVGIcons.add}
           New Task
         </button>
       )}
-      <p className="font-black text-3xl mt-10">Tasks</p>
+      <p className="mt-5 font-black text-2xl">Tasks</p>
 
       {showTaskDeleteAlert && msg && <Alert alert={alert} />}
 
@@ -111,7 +112,7 @@ const Project = () => {
         {project.tasks?.length ? (
           project.tasks?.map((task) => <Task key={task._id} task={task} />)
         ) : (
-          <p className="text-center text-xl text-gray-800 font-bold p-5">
+          <p className="p-5 text-xl font-bold text-center text-gray-800">
             There are no tasks in this project
           </p>
         )}
@@ -120,10 +121,10 @@ const Project = () => {
       {admin && (
         <>
           <div className="flex justify-between items-center mt-10">
-            <p className="font-black text-3xl">Collaborators</p>
+            <p className="font-black text-2xl">Collaborators</p>
             <Link
               to={`/projects/new-collaborator/${project._id}`}
-              className="text-gray-400 hover:text-sky-600 uppercase font-bold flex items-center p-4"
+              className="p-4 text-gray-400 hover:text-sky-600 uppercase font-bold flex items-center"
             >
               {" "}
               {SVGIcons.add}
@@ -144,7 +145,7 @@ const Project = () => {
                 />
               ))
             ) : (
-              <p className="text-center text-lg text-gray-800 font-bold p-5">
+              <p className="p-5 text-xl font-bold text-center text-gray-800">
                 There are no collaborators in this project
               </p>
             )}

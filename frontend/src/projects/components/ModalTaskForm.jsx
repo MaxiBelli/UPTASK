@@ -84,7 +84,6 @@ const ModalTaskForm = () => {
             <Dialog.Overlay className="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" />
           </Transition.Child>
 
-          {/* This element is to trick the browser into centering the modal contents. */}
           <span
             className="hidden sm:inline-block sm:align-middle sm:h-screen"
             aria-hidden="true"
@@ -130,12 +129,12 @@ const ModalTaskForm = () => {
                         className="text-gray-700 uppercase font-bold text-sm"
                         htmlFor="name"
                       >
-                        Task Name
+                        Name
                       </label>
                       <input
                         type="text"
                         id="name"
-                        placeholder="Task Name"
+                        placeholder="Enter a short and descriptive title for the Task."
                         className="border-2 w-full p-2 mt-2 placeholder-gray-400 rounded-md"
                         value={name}
                         onChange={(e) => setName(e.target.value)}
@@ -147,20 +146,20 @@ const ModalTaskForm = () => {
                         className="text-gray-700 uppercase font-bold text-sm"
                         htmlFor="description"
                       >
-                        Task Description
+                        Description
                       </label>
                       <textarea
                         id="description"
-                        placeholder="Task Description"
+                        placeholder="Provide additional details about the Task."
                         className="border-2 w-full p-2 mt-2 placeholder-gray-400 rounded-md"
                         value={description}
                         onChange={(e) => setDescription(e.target.value)}
                       />
                     </div>
 
-                    <div className="mb-5">
+                    <div className="mb-5 flex-col items-start">
                       <label
-                        className="text-gray-700 uppercase font-bold text-sm"
+                        className="text-gray-700 uppercase font-bold text-sm flex items-center gap-2"
                         htmlFor="deadline"
                       >
                         Deadline
@@ -174,11 +173,12 @@ const ModalTaskForm = () => {
                       />
                     </div>
 
-                    <div className="mb-5">
+                    <div className="mb-5 flex-col items-start">
                       <label
-                        className="text-gray-700 uppercase font-bold text-sm"
+                        className="text-gray-700 uppercase font-bold text-sm flex items-center gap-2"
                         htmlFor="priority"
                       >
+                        {SVGIcons.priority}
                         Priority
                       </label>
                       <div className="flex justify-between mt-2">
@@ -186,7 +186,7 @@ const ModalTaskForm = () => {
                           <button
                             key={option.name}
                             type="button"
-                            className={`py-2 px-4 rounded-md text-white font-bold ${
+                            className={`py-2 px-4 rounded-md text-white text-xs font-bold uppercase ${
                               priority === option.name
                                 ? option.bgColor
                                 : "bg-gray-300 hover:bg-gray-400"

@@ -1,5 +1,4 @@
-import React from "react";
-import Icons from "../../assets/icons/SVGIcons";
+import SVGIcons from "../../assets/icons/SVGIcons";
 import { formatDate } from "../helpers/formatDate";
 import { PRIORITY } from "../constants/priorityTask";
 import useProjects from "../hooks/useProjects";
@@ -16,41 +15,50 @@ const Task = ({ task }) => {
     <div className="border-b p-4 flex justify-between items-center">
       <div className="flex flex-col items-start">
         <p className="mb-1 text-xl font-bold">{name}</p>
-        <p className="mb-1 text-base text-gray-700">{description}</p>
-        <p className="mb-1 text-base">{formatDate(deadline)}</p>
-        <span
-          className={`py-1 rounded-lg text-center mt-1 text-white font-bold text-sm ${
-            PRIORITY.find((p) => p.name === priority)?.bgColor || "bg-gray-500"
-          } w-24`}
+        <p className="mb-1 text-lg text-gray-700">{description}</p>
+        <div className="flex items-center gap-2 text-sm bg-gray-500 rounded-lg p-2 text-white font-bold">
+          {SVGIcons.calendar}
+          <span className="ml-2">{formatDate(deadline)}</span>
+        </div>
+        <div
+          className={`flex items-center gap-2 py-1 px-2 mt-1 text-white font-bold text-sm uppercase ${
+            PRIORITY.find((p) => p.name === priority)?.bgColor
+          } rounded-lg w-26`}
         >
+          {SVGIcons.priority}
           {priority}
-        </span>
+        </div>
+        {status && (
+          <p className="flex items-center gap-2 text-sm font-bold bg-green-600 p-2 mt-2 rounded-lg text-white">
+            {SVGIcons.checked} {task.completedBy.name}
+          </p>
+        )}
       </div>
 
-      <div className="flex flex-col lg:flex-row gap-2">
+      <div className="flex flex-col lg:flex-row gap-2 lg:items-end">
         {admin && (
           <button
-            className="flex items-center gap-2 bg-yellow-500 px-4 py-3 text-white uppercase font-bold text-sm rounded-lg"
+            className="flex items-center gap-2 px-4 py-3 text-white uppercase font-bold text-sm bg-indigo-600 rounded-lg"
             onClick={() => handleModalTaskEdit(task)}
           >
-            {Icons.edit} Edit
+            {SVGIcons.edit} Edit
           </button>
         )}
         <button
-          className={`${
-            status ? "bg-gray-500" : "bg-green-600"
-          } w-36 px-4 py-3 text-white uppercase font-bold text-sm rounded-lg flex items-center gap-2 flex-shrink-0`}
+          className={`flex items-center gap-2 flex-shrink-0 w-36 px-4 py-3 text-white uppercase font-bold text-sm rounded-lg ${
+            status ? "bg-green-600" : "bg-gray-500"
+          }`}
           onClick={() => completeTask(_id)}
         >
-          {status ? Icons.check : Icons.checked}
-          {status ? "Incomplete" : "Complete"}
+          {status ? SVGIcons.checked : SVGIcons.check}
+          {status ? "Complete" : "Incomplete"}
         </button>
         {admin && (
           <button
-            className="flex items-center gap-2 bg-red-600 px-4 py-3 text-white uppercase font-bold text-sm rounded-lg"
+            className="flex items-center gap-2 px-4 py-3 text-white uppercase font-bold text-sm bg-red-600 rounded-lg"
             onClick={() => handleModalTaskDelete(task)}
           >
-            {Icons.delete} Delete
+            {SVGIcons.delete} Delete
           </button>
         )}
       </div>

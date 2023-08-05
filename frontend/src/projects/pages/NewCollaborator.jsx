@@ -1,13 +1,13 @@
 import { useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import SVGIcons from "../../assets/icons/SVGIcons";
-import CollaboratorForm from "../components/CollaboratorForm";
 import useProjects from "../hooks/useProjects";
-import Alert from "../../components/Alert";
+import BackButton from "../components/BackButton";
+import CollaboratorForm from "../components/CollaboratorForm";
+import Loader from "../components/Loader";
+
 
 const NewCollaborator = () => {
   const params = useParams();
-  const navigate = useNavigate();
 
   const { getProject, project, loading, collaborator, addCollaborator, alert } =
     useProjects();
@@ -20,15 +20,7 @@ const NewCollaborator = () => {
 
   return (
     <>
-      <div className="absolute top-20 right-8 text-gray-400 hover:text-gray-800 flex items-center gap-2 mt-6">
-        <button
-          className="uppercase font-bold flex items-center gap-1"
-          onClick={() => navigate(-1)}
-        >
-          {SVGIcons.back}
-          BACK
-        </button>
-      </div>
+      <BackButton />
       <h1 className="font-black text-4xl">Project</h1>
 
       <div className=" bg-white shadow mt-4 rounded-lg p-4">
@@ -43,15 +35,13 @@ const NewCollaborator = () => {
           </div>
         </div>
       </div>
-      <h1 className="text-center text-4xl font-black mt-6">
-        Add Collaborator
-      </h1>
+      <h1 className="text-center text-4xl font-black mt-6">Add Collaborator</h1>
 
       <div className="mt-10 flex justify-center">
         <CollaboratorForm />
       </div>
       {loading ? (
-        <p className="text-center">Loading...</p>
+        <p className="text-center"><Loader/></p>
       ) : (
         collaborator?._id && (
           <div className="flex justify-center mt-10">

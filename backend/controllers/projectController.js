@@ -31,7 +31,10 @@ const getProject = async (req, res) => {
 
   // Find the project by its ID and populate its 'tasks' and 'collaborators' fields with relevant details
   const project = await Project.findById(id)
-    .populate("tasks")
+    .populate({
+      path: "tasks",
+      populate: { path: "completedBy", select: "name" },
+    })
     .populate("collaborators", "name email");
 
   if (!project) {

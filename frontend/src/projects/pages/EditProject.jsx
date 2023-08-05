@@ -1,13 +1,14 @@
 import { useEffect } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import SVGIcons from "../../assets/icons/SVGIcons";
-import ProjectForm from "../components/ProjectForm";
 import useProjects from "../hooks/useProjects";
+import ProjectForm from "../components/ProjectForm";
 import ModalDelete from "../components/ModalDelete";
+import BackButton from "../components/BackButton";
+import Loader from "../components/Loader";
 
 const EditProject = () => {
   const params = useParams();
-  const navigate = useNavigate();
 
   const {
     getProject,
@@ -29,19 +30,11 @@ const EditProject = () => {
     handleModalProjectDelete();
   };
 
-  if (loading) return "Loading...";
+  if (loading) return <Loader/>;
 
   return (
     <>
-      <div className="absolute top-20 right-8 text-gray-400 hover:text-gray-800 flex items-center gap-2 mt-6">
-        <button
-          className="uppercase font-bold flex items-center gap-1"
-          onClick={() => navigate(-1)}
-        >
-          {SVGIcons.back}
-          BACK
-        </button>
-      </div>
+      <BackButton />
       <h1 className="font-black text-4xl">Project</h1>
 
       <div className="bg-white shadow mt-4 rounded-lg p-4">

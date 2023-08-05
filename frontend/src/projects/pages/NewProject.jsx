@@ -1,11 +1,11 @@
-import { useNavigate } from "react-router-dom";
 import SVGIcons from "../../assets/icons/SVGIcons";
+import BackButton from "../components/BackButton";
 import ProjectForm from "../components/ProjectForm";
 
 const NewProject = () => {
-  const navigate = useNavigate();
   return (
     <>
+      <BackButton />
       <div className="absolute top-20 right-8 text-gray-400 hover:text-gray-800 flex items-center gap-2 mt-6">
         <button
           className="uppercase font-bold flex items-center gap-1"

@@ -1,9 +1,20 @@
 import { useState, useEffect, createContext } from "react";
 import { useNavigate } from "react-router-dom";
-import { getAuthConfig } from "../helpers/getAuthConfig";
 import clientAxios from "../../config/clientAxios";
 
 const ProjectsContext = createContext();
+
+const getAuthorizationConfig = () => {
+  const token = localStorage.getItem("token");
+  if (!token) return null;
+
+  return {
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+  };
+};
 
 const ProjectsProvider = ({ children }) => {
   const [projects, setProjects] = useState([]);
@@ -22,7 +33,7 @@ const ProjectsProvider = ({ children }) => {
   useEffect(() => {
     const getProjects = async () => {
       try {
-        const config = getAuthConfig();
+        const config = getAuthorizationConfig();
         if (!config) return;
 
         const { data } = await clientAxios("/projects", config);
@@ -32,7 +43,7 @@ const ProjectsProvider = ({ children }) => {
       }
     };
     getProjects();
-  }, [projects]);
+  }, []);
 
   // SHOW ALERT
   const showAlert = (alert) => {
@@ -55,7 +66,7 @@ const ProjectsProvider = ({ children }) => {
   // EDIT PROJECT
   const editProject = async (project) => {
     try {
-      const config = getAuthConfig();
+      const config = getAuthorizationConfig();
       if (!config) return;
 
       const { data } = await clientAxios.put(
@@ -88,7 +99,7 @@ const ProjectsProvider = ({ children }) => {
   // NEW PROJECT
   const newProject = async (project) => {
     try {
-      const config = getAuthConfig();
+      const config = getAuthorizationConfig();
       if (!config) return;
 
       const { data } = await clientAxios.post("/projects", project, config);
@@ -113,9 +124,9 @@ const ProjectsProvider = ({ children }) => {
   const getProject = async (id) => {
     setLoading(true);
     try {
-      const config = getAuthConfig();
+      const config = getAuthorizationConfig();
       if (!config) return;
-
+  
       const { data } = await clientAxios(`/projects/${id}`, config);
       setProject(data);
       setAlert({});
@@ -129,14 +140,17 @@ const ProjectsProvider = ({ children }) => {
         setAlert({});
       }, 3000);
     } finally {
-      setLoading(false);
+      // Agregar un tiempo de espera de 2 segundos antes de cambiar el estado de loading a false
+      setTimeout(() => {
+        setLoading(false);
+      }, 1000); // Tiempo de espera de 2 segundos (2000 milisegundos)
     }
   };
 
   // DELETE PROJECT
   const deleteProject = async (id) => {
     try {
-      const config = getAuthConfig();
+      const config = getAuthorizationConfig();
       if (!config) return;
 
       const { data } = await clientAxios.delete(`/projects/${id}`, config);
@@ -184,7 +198,7 @@ const ProjectsProvider = ({ children }) => {
   // CREATE TASK
   const createTask = async (task) => {
     try {
-      const config = getAuthConfig();
+      const config = getAuthorizationConfig();
       if (!config) return;
 
       const { data } = await clientAxios.post("/tasks", task, config);
@@ -210,7 +224,7 @@ const ProjectsProvider = ({ children }) => {
   // EDIT TASK
   const editTask = async (task) => {
     try {
-      const config = getAuthConfig();
+      const config = getAuthorizationConfig();
       if (!config) return;
 
       const { data } = await clientAxios.put(`/tasks/${task.id}`, task, config);
@@ -250,7 +264,7 @@ const ProjectsProvider = ({ children }) => {
   // DELETE TASK
   const deleteTask = async () => {
     try {
-      const config = getAuthConfig();
+      const config = getAuthorizationConfig();
       if (!config) return;
 
       const { data } = await clientAxios.delete(`/tasks/${task._id}`, config);
@@ -279,7 +293,7 @@ const ProjectsProvider = ({ children }) => {
   const submitCollaborator = async (email) => {
     setLoading(true);
     try {
-      const config = getAuthConfig();
+      const config = getAuthorizationConfig();
       if (!config) return;
 
       const { data } = await clientAxios.post(
@@ -303,7 +317,7 @@ const ProjectsProvider = ({ children }) => {
   // ADD COLLABORATOR
   const addCollaborator = async (email) => {
     try {
-      const config = getAuthConfig();
+      const config = getAuthorizationConfig();
       if (!config) return;
 
       const { data } = await clientAxios.post(
@@ -338,7 +352,7 @@ const ProjectsProvider = ({ children }) => {
   // DELETE COLLABORATOR
   const deleteCollaborator = async () => {
     try {
-      const config = getAuthConfig();
+      const config = getAuthorizationConfig();
       if (!config) return;
 
       const { data } = await clientAxios.post(
@@ -372,7 +386,7 @@ const ProjectsProvider = ({ children }) => {
   // COMPLETE TASK
   const completeTask = async (id) => {
     try {
-      const config = getAuthConfig();
+      const config = getAuthorizationConfig();
       if (!config) return;
 
       const { data } = await clientAxios.post(

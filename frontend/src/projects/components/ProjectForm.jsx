@@ -36,7 +36,6 @@ const ProjectForm = () => {
       return;
     }
 
-    // Pass the data to the provider
     await submitProject({ id, name, description, deadline, client });
 
     setId(null);
@@ -60,14 +59,14 @@ const ProjectForm = () => {
           className="text-gray-700 uppercase font-bold text-sm"
           htmlFor="name"
         >
-          Project Name
+          Name
         </label>
 
         <input
           id="name"
           type="text"
           className="border w-full p-2 mt-2 placeholder-gray-400 rounded-md"
-          placeholder="Project Name"
+          placeholder="Enter a short and descriptive title for the Project."
           value={name}
           onChange={(e) => setName(e.target.value)}
         />
@@ -84,7 +83,7 @@ const ProjectForm = () => {
         <textarea
           id="description"
           className="border w-full p-2 mt-2 placeholder-gray-400 rounded-md"
-          placeholder="Project Description"
+          placeholder="Provide additional details about the Project. "
           value={description}
           onChange={(e) => setDescription(e.target.value)}
         />
@@ -112,14 +111,14 @@ const ProjectForm = () => {
           className="text-gray-700 uppercase font-bold text-sm"
           htmlFor="client"
         >
-          Client Name
+          Client 
         </label>
 
         <input
           id="client"
           type="text"
           className="border w-full p-2 mt-2 placeholder-gray-400 rounded-md"
-          placeholder="Client Name"
+          placeholder="Enter the Client's name or Organization."
           value={client}
           onChange={(e) => setClient(e.target.value)}
         />
