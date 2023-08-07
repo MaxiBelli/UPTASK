@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
 import SVGIcons from "../../assets/icons/SVGIcons";
 import { formatDate } from "../helpers/formatDate";
+import io from "socket.io-client"
 import useAdmin from "../../hooks/useAdmin";
 import useProjects from "../hooks/useProjects";
 import Alert from "../../components/Alert";
@@ -12,6 +13,8 @@ import ModalDelete from "../components/ModalDelete";
 import ModalTaskForm from "../components/ModalTaskForm";
 import Task from "../components/Task";
 import Loader from "../components/Loader";
+
+let socket;
 
 const Project = () => {
   const params = useParams();
@@ -28,6 +31,7 @@ const Project = () => {
     deleteProject,
     handleModalProjectDelete,
     modalProjectDelete,
+    submitProjectTasks
   } = useProjects();
   const admin = useAdmin();
 
@@ -35,7 +39,19 @@ const Project = () => {
     getProject(params.id);
   }, []);
 
-  console.log(project);
+  useEffect(() => {
+    socket = io(import.meta.env.VITE_BACKEND_URL);
+    socket.emit("open project", params.id);
+  }, []);
+
+  useEffect(() => {
+    socket.on("task added", (newTask) => {
+      if (newTask.project === project._id) {
+        submitProjectTasks(newTask);
+      }
+    });
+  })
+
 
   const { name, client, description, deadline } = project;
   const [showProjectDeleteAlert, setShowProjectDeleteAlert] = useState(false);

@@ -1,6 +1,10 @@
 import { useState, useEffect, createContext } from "react";
 import { useNavigate } from "react-router-dom";
 import clientAxios from "../../config/clientAxios";
+import io from "socket.io-client"
+
+
+let socket;
 
 const ProjectsContext = createContext();
 
@@ -17,6 +21,8 @@ const getAuthorizationConfig = () => {
 };
 
 const ProjectsProvider = ({ children }) => {
+  const navigate = useNavigate();
+
   const [projects, setProjects] = useState([]);
   const [project, setProject] = useState({});
   const [task, setTask] = useState({});
@@ -29,8 +35,9 @@ const ProjectsProvider = ({ children }) => {
   const [modalCollaboratorDelete, setModalCollaboratorDelete] = useState(false);
   const [searcher, setSearcher] = useState(false);
 
-  const navigate = useNavigate();
 
+
+  // GET PROJECTS
   useEffect(() => {
     const getProjects = async () => {
       try {
@@ -45,6 +52,12 @@ const ProjectsProvider = ({ children }) => {
     };
     getProjects();
   }, []);
+
+// SOCKET IO
+  useEffect(() => {
+    socket = io(import.meta.env.VITE_BACKEND_URL);
+  }, []);
+
 
   // SHOW ALERT
   const showAlert = (alert) => {
@@ -209,14 +222,13 @@ const ProjectsProvider = ({ children }) => {
         error: false,
       });
 
-      const updatedProject = { ...project };
-      updatedProject.tasks.push(data);
-      setProject(updatedProject);
-
       setTimeout(() => {
         setAlert({});
         setModalTaskForm(false);
       }, 2000);
+
+      // SOCKET IO
+      socket.emit("new task", data )
     } catch (error) {
       console.log(error);
     }
@@ -416,6 +428,15 @@ const ProjectsProvider = ({ children }) => {
     setSearcher(!searcher);
   };
 
+// SOCKET IO
+  // SUBMIT PROJECT TASKS
+const submitProjectTasks = (task) => {
+  const updatedProject = { ...project };
+  updatedProject.tasks = [...updatedProject.tasks, task];
+  setProject(updatedProject);
+};
+
+
   return (
     <ProjectsContext.Provider
       value={{
@@ -444,6 +465,7 @@ const ProjectsProvider = ({ children }) => {
         showAlert,
         submitCollaborator,
         submitProject,
+        submitProjectTasks,
         submitTask,
         task,
       }}

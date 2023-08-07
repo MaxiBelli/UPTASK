@@ -36,11 +36,9 @@ app.use("/api/projects", projectRoutes);
 app.use("/api/tasks", taskRoutes);
 
 const PORT = process.env.PORT || 4000;
-
-app.listen(PORT, () => {
+const server = app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
-
 
 // Socket.io
 import { Server } from "socket.io";
@@ -56,5 +54,13 @@ io.on("connection", (socket) => {
   console.log("Connected to socket.io");
 
   // Define socket.io events
+  socket.on("open project", (project) => {
+    socket.join(project);
+  });
+
+  socket.on("new task", (task) => {
+    const project = task.project;
+    socket.to(project).emit("task added", task);
+  });
  
 });
