@@ -27,6 +27,7 @@ const ProjectsProvider = ({ children }) => {
   const [modalTaskDelete, setModalTaskDelete] = useState(false);
   const [modalProjectDelete, setModalProjectDelete] = useState(false);
   const [modalCollaboratorDelete, setModalCollaboratorDelete] = useState(false);
+  const [searcher, setSearcher] = useState(false);
 
   const navigate = useNavigate();
 
@@ -126,7 +127,7 @@ const ProjectsProvider = ({ children }) => {
     try {
       const config = getAuthorizationConfig();
       if (!config) return;
-  
+
       const { data } = await clientAxios(`/projects/${id}`, config);
       setProject(data);
       setAlert({});
@@ -410,6 +411,11 @@ const ProjectsProvider = ({ children }) => {
     }
   };
 
+  //  HANDLE SEARCHER
+  const handleSearcher = () => {
+    setSearcher(!searcher);
+  };
+
   return (
     <ProjectsContext.Provider
       value={{
@@ -421,6 +427,7 @@ const ProjectsProvider = ({ children }) => {
         deleteProject,
         deleteTask,
         getProject,
+        handleSearcher,
         handleModalCollaboratorDelete,
         handleModalProjectDelete,
         handleModalTask,
@@ -433,6 +440,7 @@ const ProjectsProvider = ({ children }) => {
         modalTaskForm,
         project,
         projects,
+        searcher,
         showAlert,
         submitCollaborator,
         submitProject,

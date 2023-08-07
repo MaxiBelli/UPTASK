@@ -1,4 +1,4 @@
-import loaderIcon from '../../../public/uptask.png';
+import loaderIcon from '../../assets/icons/uptask.png';
 
 const Loader = () => {
   return (

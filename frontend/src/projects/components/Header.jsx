@@ -1,12 +1,17 @@
 import { Link } from "react-router-dom";
+import UptaskIcon from "../../assets/icons/uptask.png"
 import SVGIcons from "../../assets/icons/SVGIcons";
+import useProjects from "../hooks/useProjects";
+import Search from "./Search";
 
 const Header = () => {
+  const { handleSearcher } = useProjects();
+
   return (
     <header className="px-4 py-5 bg-white border-b">
       <div className="md:flex md:justify-between items-center">
         <div className="flex items-center gap-2">
-          <img src="/uptask.png" alt="My Icon" className="w-12 h-12 mr-2" />
+          <img src={UptaskIcon} alt="My Icon" className="w-12 h-12 mr-2" />
 
           <h2 className="text-4xl text-sky-600 font-black text-center mb-5 md:mb-0">
             UpTask
@@ -16,7 +21,7 @@ const Header = () => {
           <Link to="/projects" className=" text-lg font-bold uppercase">
             Projects
           </Link>
-          <button type="button">
+          <button type="button" onClick={handleSearcher}>
             {SVGIcons.search}
           </button>
           <button
@@ -25,6 +30,7 @@ const Header = () => {
           >
             Logout
           </button>
+          <Search/>
         </div>
       </div>
     </header>
